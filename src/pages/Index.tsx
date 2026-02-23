@@ -100,8 +100,69 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Pricing */}
       <section className="py-20">
+        <div className="container">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-3">
+              Choose Your <span className="text-primary">Plan</span>
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              Start free and upgrade when you're ready to connect with your perfect match.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* Free */}
+            <div className="bg-card rounded-lg border border-border p-8 flex flex-col">
+              <h3 className="text-lg font-semibold font-sans mb-1">Free</h3>
+              <div className="text-3xl font-display font-bold mb-1">₹0</div>
+              <p className="text-sm text-muted-foreground mb-6">Get started at no cost</p>
+              <ul className="text-sm text-muted-foreground space-y-3 mb-8 flex-1">
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Create & share your profile</li>
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Browse up to 20 profiles/day</li>
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Send 5 interests/day</li>
+              </ul>
+              <Button variant="outline" className="w-full" onClick={() => navigate(isAuthenticated ? "/matches" : "/auth?mode=signup")}>
+                Get Started
+              </Button>
+            </div>
+            {/* Gold */}
+            <div className="bg-card rounded-lg border-2 border-primary p-8 flex flex-col relative shadow-lg">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">Most Popular</span>
+              <h3 className="text-lg font-semibold font-sans mb-1">Gold</h3>
+              <div className="text-3xl font-display font-bold mb-1">₹999<span className="text-base font-normal text-muted-foreground">/mo</span></div>
+              <p className="text-sm text-muted-foreground mb-6">For serious seekers</p>
+              <ul className="text-sm text-muted-foreground space-y-3 mb-8 flex-1">
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Unlimited profile views</li>
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Unlimited interests</li>
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Direct messaging</li>
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> See who viewed your profile</li>
+              </ul>
+              <Button className="w-full" onClick={() => navigate(isAuthenticated ? "/matches" : "/auth?mode=signup")}>
+                Upgrade to Gold
+              </Button>
+            </div>
+            {/* Diamond */}
+            <div className="bg-card rounded-lg border border-border p-8 flex flex-col">
+              <h3 className="text-lg font-semibold font-sans mb-1">Diamond</h3>
+              <div className="text-3xl font-display font-bold mb-1">₹2,499<span className="text-base font-normal text-muted-foreground">/mo</span></div>
+              <p className="text-sm text-muted-foreground mb-6">Premium experience</p>
+              <ul className="text-sm text-muted-foreground space-y-3 mb-8 flex-1">
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Everything in Gold</li>
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Dedicated relationship manager</li>
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Priority profile highlighting</li>
+                <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Horoscope matching</li>
+              </ul>
+              <Button variant="outline" className="w-full" onClick={() => navigate(isAuthenticated ? "/matches" : "/auth?mode=signup")}>
+                Go Diamond
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 warm-cream-bg">
         <div className="container text-center">
           <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
             Begin Your Journey Today
