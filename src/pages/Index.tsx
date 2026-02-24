@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Heart, Search, Shield, Users, Star, MessageCircle } from "lucide-react";
+import { Heart, Search, Shield, Users, Star, MessageCircle, Camera, BadgeCheck, Home, Phone, MessageSquare, ThumbsUp, Eye } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import heroImage from "@/assets/hero-couple.jpg";
 
 const features = [
@@ -69,6 +70,68 @@ const Index = () => {
               <div className="text-sm text-primary-foreground/70 mt-1">{s.label}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Complete Your Profile */}
+      {isAuthenticated && (
+        <section className="py-10 bg-accent/30">
+          <div className="container max-w-4xl">
+            <h2 className="text-xl font-display font-bold mb-1">Complete Your Profile</h2>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="text-sm text-muted-foreground">Profile completeness score</span>
+              <span className="text-sm font-semibold text-primary">41%</span>
+              <Progress value={41} className="w-24 h-2" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                { icon: Camera, label: "Add Photo(s)", color: "text-green-600 bg-green-50" },
+                { icon: BadgeCheck, label: "Verify Profile", color: "text-blue-600 bg-blue-50" },
+                { icon: Home, label: "Family Details", color: "text-orange-600 bg-orange-50" },
+              ].map((item) => (
+                <button
+                  key={item.label}
+                  onClick={() => navigate("/edit-profile")}
+                  className="flex items-center gap-3 bg-card border border-border rounded-lg px-5 py-4 hover:shadow-md transition-shadow"
+                >
+                  <div className={`h-10 w-10 rounded-full flex items-center justify-center ${item.color}`}>
+                    <item.icon className="h-5 w-5" />
+                  </div>
+                  <span className="font-medium text-sm">{item.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Become a Paid Member */}
+      <section className="py-12">
+        <div className="container max-w-4xl">
+          <div className="bg-card border border-border rounded-xl p-8 flex flex-col md:flex-row items-center gap-8">
+            <div className="flex-1">
+              <h2 className="text-2xl font-display font-bold mb-2">Become a paid member</h2>
+              <p className="text-lg mb-5">
+                Get up to <span className="font-bold text-primary">71% OFF</span> on paid membership!
+              </p>
+              <ul className="space-y-3 mb-6">
+                {[
+                  { icon: Phone, text: "Call/WhatsApp matches" },
+                  { icon: MessageSquare, text: "Unlimited messages" },
+                  { icon: ThumbsUp, text: "Higher chances of response" },
+                  { icon: Eye, text: "View and match horoscopes" },
+                ].map((item) => (
+                  <li key={item.text} className="flex items-center gap-3 text-sm">
+                    <item.icon className="h-4 w-4 text-primary shrink-0" />
+                    <span>{item.text}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button size="lg" onClick={() => navigate(isAuthenticated ? "/matches" : "/auth?mode=signup")}>
+                See membership plans
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
 
