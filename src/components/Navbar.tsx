@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Heart, Bell, Menu, X } from "lucide-react";
+import { Heart, Bell, Menu, X, Home, Users, Search, MessageSquare, Sparkles, UserPen, SlidersHorizontal, Star, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -13,11 +13,11 @@ import {
 import { useState } from "react";
 
 const navLinks = [
-  { label: "Home", path: "/" },
-  { label: "Matches", path: "/matches" },
-  { label: "Search", path: "/search" },
-  { label: "Interests", path: "/interests" },
-  { label: "Messages", path: "/messages" },
+  { label: "Home", path: "/", icon: Home },
+  { label: "Matches", path: "/matches", icon: Users },
+  { label: "Search", path: "/search", icon: Search },
+  { label: "Interests", path: "/interests", icon: Sparkles },
+  { label: "Messages", path: "/messages", icon: MessageSquare },
 ];
 
 const Navbar = () => {
@@ -39,19 +39,23 @@ const Navbar = () => {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                location.pathname === link.path
-                  ? "text-primary bg-accent"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  location.pathname === link.path
+                    ? "text-primary bg-accent"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Right side */}
@@ -79,21 +83,30 @@ const Navbar = () => {
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="end" className="w-52">
                   <div className="px-2 py-1.5">
                     <p className="text-sm font-medium">{user?.name}</p>
                     <p className="text-xs text-muted-foreground">{user?.email}</p>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/preferences")}>
-                    Preferences
+                  <DropdownMenuItem onClick={() => navigate("/edit-profile")} className="gap-2">
+                    <UserPen className="h-4 w-4" /> Edit Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/notifications")}>
-                    Notifications
+                  <DropdownMenuItem onClick={() => navigate("/edit-preferences")} className="gap-2">
+                    <SlidersHorizontal className="h-4 w-4" /> Partner Preferences
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/horoscope")} className="gap-2">
+                    <Star className="h-4 w-4" /> Horoscope
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/notifications")} className="gap-2">
+                    <Bell className="h-4 w-4" /> Notifications
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/settings")} className="gap-2">
+                    <Settings className="h-4 w-4" /> Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout} className="text-destructive">
-                    Logout
+                  <DropdownMenuItem onClick={logout} className="text-destructive gap-2">
+                    <X className="h-4 w-4" /> Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -125,20 +138,24 @@ const Navbar = () => {
       {mobileOpen && (
         <div className="md:hidden border-t border-border bg-card animate-fade-in">
           <nav className="container py-4 flex flex-col gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setMobileOpen(false)}
-                className={`px-3 py-2.5 rounded-md text-sm font-medium ${
-                  location.pathname === link.path
-                    ? "text-primary bg-accent"
-                    : "text-muted-foreground"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileOpen(false)}
+                  className={`px-3 py-2.5 rounded-md text-sm font-medium flex items-center gap-2 ${
+                    location.pathname === link.path
+                      ? "text-primary bg-accent"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  <Icon className="h-4 w-4" />
+                  {link.label}
+                </Link>
+              );
+            })}
             {!isAuthenticated && (
               <div className="flex gap-2 pt-3 border-t border-border mt-2">
                 <Button variant="ghost" className="flex-1" onClick={() => { navigate("/auth?mode=login"); setMobileOpen(false); }}>

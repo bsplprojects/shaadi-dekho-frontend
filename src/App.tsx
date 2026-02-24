@@ -15,6 +15,10 @@ import Interests from "./pages/Interests";
 import Messages from "./pages/Messages";
 import Notifications from "./pages/Notifications";
 import Preferences from "./pages/Preferences";
+import EditProfile from "./pages/EditProfile";
+import EditPreferences from "./pages/EditPreferences";
+import Horoscope from "./pages/Horoscope";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +43,10 @@ const App = () => (
                 <Route path="/messages" element={<Messages />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/preferences" element={<Preferences />} />
+                <Route path="/edit-profile" element={<EditProfile />} />
+                <Route path="/edit-preferences" element={<EditPreferences />} />
+                <Route path="/horoscope" element={<Horoscope />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
