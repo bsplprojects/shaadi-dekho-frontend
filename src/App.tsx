@@ -19,6 +19,11 @@ import EditProfile from "./pages/EditProfile";
 import EditPreferences from "./pages/EditPreferences";
 import Horoscope from "./pages/Horoscope";
 import Settings from "./pages/Settings";
+import ContactUs from "./pages/ContactUs";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import HelpCenter from "./pages/HelpCenter";
+import SafetyTips from "./pages/SafetyTips";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +52,11 @@ const App = () => (
                 <Route path="/edit-preferences" element={<EditPreferences />} />
                 <Route path="/horoscope" element={<Horoscope />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/contact" element={<ContactUs />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/help" element={<HelpCenter />} />
+                <Route path="/safety" element={<SafetyTips />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
