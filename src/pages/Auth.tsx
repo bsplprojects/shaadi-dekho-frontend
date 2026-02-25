@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, Sparkles, Shield, Users } from "lucide-react";
+import { Heart, Shield, Users, Star } from "lucide-react";
+import authImage from "@/assets/auth-couple.jpg";
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
@@ -30,31 +31,29 @@ const Auth = () => {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex relative overflow-hidden">
-      {/* Left panel - decorative */}
-      <div className="hidden lg:flex lg:w-1/2 relative hero-gradient items-center justify-center p-12">
-        {/* Decorative circles */}
-        <div className="absolute top-20 left-20 w-64 h-64 rounded-full bg-primary-foreground/5 blur-xl" />
-        <div className="absolute bottom-20 right-10 w-80 h-80 rounded-full bg-primary-foreground/5 blur-xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full border border-primary-foreground/10" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] rounded-full border border-primary-foreground/5" />
-        
-        <div className="relative z-10 text-center text-primary-foreground max-w-md">
-          <Heart className="h-16 w-16 mx-auto mb-8 fill-primary-foreground/20" />
-          <h2 className="text-4xl font-display font-bold mb-4">Find Your Soulmate</h2>
-          <p className="text-primary-foreground/70 text-lg mb-10">
+      {/* Left panel - image + content */}
+      <div className="hidden lg:flex lg:w-1/2 relative">
+        <img src={authImage} alt="Happy couple" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-foreground/10" />
+        <div className="relative z-10 flex flex-col justify-end p-12 pb-16 text-primary-foreground">
+          <h2 className="text-4xl font-display font-bold mb-3 leading-tight">
+            Find Your <br />Perfect Life Partner
+          </h2>
+          <p className="text-primary-foreground/75 text-base mb-8 max-w-sm">
             Join millions who found love, companionship, and a lifelong bond on VivahBandhan.
           </p>
-          <div className="grid grid-cols-3 gap-6 text-center">
+          <div className="flex gap-6">
             {[
-              { icon: Users, label: "5M+ Members" },
-              { icon: Shield, label: "Verified" },
-              { icon: Sparkles, label: "AI Matching" },
+              { icon: Users, value: "5M+", label: "Members" },
+              { icon: Shield, value: "100%", label: "Verified" },
+              { icon: Star, value: "1.2M+", label: "Marriages" },
             ].map((item) => (
-              <div key={item.label} className="flex flex-col items-center gap-2">
-                <div className="h-12 w-12 rounded-full bg-primary-foreground/10 flex items-center justify-center">
-                  <item.icon className="h-5 w-5" />
+              <div key={item.label} className="text-center">
+                <div className="h-10 w-10 mx-auto rounded-full bg-primary-foreground/15 backdrop-blur-sm flex items-center justify-center mb-1.5">
+                  <item.icon className="h-4 w-4" />
                 </div>
-                <span className="text-xs text-primary-foreground/70">{item.label}</span>
+                <div className="text-sm font-semibold">{item.value}</div>
+                <div className="text-[11px] text-primary-foreground/60">{item.label}</div>
               </div>
             ))}
           </div>
