@@ -67,6 +67,8 @@ export default {
         gold: {
           accent: "hsl(var(--gold-accent))",
         },
+        "primary-dark": "hsl(var(--primary-dark))",
+        "primary-light": "hsl(var(--primary-light))",
       },
       borderRadius: {
         lg: "var(--radius)",

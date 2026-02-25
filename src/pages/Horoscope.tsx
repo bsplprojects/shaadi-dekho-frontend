@@ -24,8 +24,8 @@ const Horoscope = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] py-8 hero-gradient-soft">
-      <div className="container max-w-2xl">
+    <div className="min-h-[calc(100vh-4rem)] py-8 page-pattern page-dots relative">
+      <div className="container max-w-2xl relative z-10">
         <h1 className="text-3xl font-display font-bold mb-2">Horoscope Details</h1>
         <p className="text-muted-foreground mb-8">Add your kundli details for better match compatibility</p>
 
