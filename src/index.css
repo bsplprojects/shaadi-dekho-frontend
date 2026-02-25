@@ -136,18 +136,20 @@
   }
 
   .btn-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
-    box-shadow: 0 4px 14px 0 hsl(var(--primary) / 0.35), inset 0 1px 0 hsl(var(--primary-light) / 0.4);
+    background: linear-gradient(180deg, hsl(var(--primary-light)) 0%, hsl(var(--primary)) 40%, hsl(var(--primary-dark)) 100%);
+    box-shadow: 0 4px 14px 0 hsl(var(--primary) / 0.3), inset 0 1px 0 0 hsl(0 0% 100% / 0.3);
+    border-top: 1px solid hsl(0 0% 100% / 0.25);
     transition: all 0.2s ease;
   }
 
   .btn-gradient:hover {
-    box-shadow: 0 6px 20px 0 hsl(var(--primary) / 0.45), inset 0 1px 0 hsl(var(--primary-light) / 0.5);
+    box-shadow: 0 6px 20px 0 hsl(var(--primary) / 0.4), inset 0 1px 0 0 hsl(0 0% 100% / 0.4);
     transform: translateY(-1px);
   }
 
   .btn-gradient:active {
-    box-shadow: 0 2px 8px 0 hsl(var(--primary) / 0.3), inset 0 2px 4px hsl(var(--primary-dark) / 0.3);
+    box-shadow: 0 2px 8px 0 hsl(var(--primary) / 0.25), inset 0 2px 4px hsl(var(--primary-dark) / 0.3);
     transform: translateY(0);
+    border-top-color: transparent;
   }
 }
