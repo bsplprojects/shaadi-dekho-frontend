@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, X, MapPin, Briefcase, GraduationCap, ChevronRight, Users, Star, Eye, UserCheck, Clock, SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const mockProfiles = [
   { id: 1, name: "Ananya Sharma", age: 26, city: "Mumbai", profession: "Software Engineer", education: "B.Tech, IIT Bombay", religion: "Hindu", height: "5'4\"", initials: "AS" },
@@ -43,6 +44,7 @@ const quickFilters = ["Newly joined", "Not seen", "Profiles with photo", "Profil
 const Matches = () => {
   const [activeItem, setActiveItem] = useState("Your Matches");
   const [activeQuickFilter, setActiveQuickFilter] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-[calc(100vh-4rem)] py-8">
@@ -108,7 +110,7 @@ const Matches = () => {
             {/* Profile cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {mockProfiles.map((p) => (
-                <Card key={p.id} className="overflow-hidden hover:shadow-lg transition-shadow group">
+                <Card key={p.id} className="overflow-hidden hover:shadow-lg transition-shadow group cursor-pointer" onClick={() => navigate(`/profile/${p.id}`)}>
                   <div className="h-48 bg-accent flex items-center justify-center">
                     <div className="h-24 w-24 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center text-2xl font-display font-bold text-primary">
                       {p.initials}

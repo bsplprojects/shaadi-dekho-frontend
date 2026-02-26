@@ -24,6 +24,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import HelpCenter from "./pages/HelpCenter";
 import SafetyTips from "./pages/SafetyTips";
+import VerifyEmail from "./pages/VerifyEmail";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -57,6 +59,8 @@ const App = () => (
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/help" element={<HelpCenter />} />
                 <Route path="/safety" element={<SafetyTips />} />
+                <Route path="/verify-email" element={<VerifyEmail />} />
+                <Route path="/profile/:id" element={<Profile />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
