@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Check } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Check, Camera, Plus, X, ImagePlus } from "lucide-react";
 
-const steps = ["Basic Details", "Professional", "Education", "Religion & Community", "Lifestyle & About"];
+const steps = ["Basic Details", "Professional", "Education", "Religion & Community", "Lifestyle & About", "Profile Photos"];
 
 const Onboarding = () => {
   const [step, setStep] = useState(0);
@@ -64,6 +65,7 @@ const Onboarding = () => {
             {step === 2 && <EducationStep />}
             {step === 3 && <ReligionStep />}
             {step === 4 && <LifestyleStep />}
+            {step === 5 && <PhotoUploadStep />}
 
             <div className="flex justify-between pt-4">
               <Button variant="outline" onClick={prev} disabled={step === 0}>
@@ -281,5 +283,94 @@ const LifestyleStep = () => (
     </div>
   </div>
 );
+
+const PhotoUploadStep = () => {
+  const [photos, setPhotos] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        if (ev.target?.result) {
+          setPhotos((prev) => [...prev.slice(0, 5), ev.target!.result as string]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+    e.target.value = "";
+  };
+
+  const removePhoto = (index: number) => setPhotos((prev) => prev.filter((_, i) => i !== index));
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center space-y-2">
+        <div className="mx-auto h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+          <Camera className="h-8 w-8 text-primary" />
+        </div>
+        <h3 className="font-semibold text-lg">Upload Your Photos</h3>
+        <p className="text-sm text-muted-foreground">Add up to 6 photos. Your first photo will be your profile picture.</p>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        {/* Main profile photo slot */}
+        <div
+          className="col-span-1 row-span-1 aspect-square relative rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 flex items-center justify-center cursor-pointer hover:bg-primary/10 transition-colors overflow-hidden"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          {photos[0] ? (
+            <>
+              <img src={photos[0]} alt="Profile" className="h-full w-full object-cover" />
+              <button onClick={(e) => { e.stopPropagation(); removePhoto(0); }} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-0.5">
+                <X className="h-3 w-3" />
+              </button>
+              <span className="absolute bottom-1 left-1 text-[10px] bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full font-medium">Main</span>
+            </>
+          ) : (
+            <div className="text-center p-2">
+              <ImagePlus className="h-6 w-6 text-primary mx-auto mb-1" />
+              <span className="text-[10px] text-primary font-medium">Profile Photo</span>
+            </div>
+          )}
+        </div>
+
+        {/* Additional photo slots */}
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div
+            key={i}
+            className="aspect-square relative rounded-xl border-2 border-dashed border-border bg-muted/30 flex items-center justify-center cursor-pointer hover:bg-muted/60 transition-colors overflow-hidden"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            {photos[i] ? (
+              <>
+                <img src={photos[i]} alt={`Photo ${i + 1}`} className="h-full w-full object-cover" />
+                <button onClick={(e) => { e.stopPropagation(); removePhoto(i); }} className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-0.5">
+                  <X className="h-3 w-3" />
+                </button>
+              </>
+            ) : (
+              <Plus className="h-5 w-5 text-muted-foreground" />
+            )}
+          </div>
+        ))}
+      </div>
+
+      <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleFileChange} />
+
+      <div className="bg-muted/50 rounded-lg p-3 text-xs text-muted-foreground space-y-1">
+        <p className="font-medium text-foreground text-sm">📸 Photo Guidelines</p>
+        <ul className="list-disc list-inside space-y-0.5">
+          <li>Clear, recent photos of yourself</li>
+          <li>At least one close-up face photo</li>
+          <li>Avoid group photos as your main picture</li>
+          <li>Supported formats: JPG, PNG, WebP</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
 
 export default Onboarding;
