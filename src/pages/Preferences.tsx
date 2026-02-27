@@ -5,19 +5,86 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { Progress } from "@/components/ui/progress";
+import { CheckCircle2, Sparkles, User, Heart, Briefcase, MapPin } from "lucide-react";
 import { useState } from "react";
+import profileSuccessImg from "@/assets/profile-success.png";
 
 const Preferences = () => {
   const navigate = useNavigate();
   const [ageRange, setAgeRange] = useState([22, 30]);
 
+  // Simulated profile completion
+  const completedSections = { basic: true, photo: true, education: true, family: false, horoscope: false, preferences: false };
+  const completionPercent = Math.round(
+    (Object.values(completedSections).filter(Boolean).length / Object.values(completedSections).length) * 100
+  );
+
+  const sectionItems = [
+    { label: "Basic Details", done: completedSections.basic, icon: User },
+    { label: "Photo Upload", done: completedSections.photo, icon: Heart },
+    { label: "Education & Career", done: completedSections.education, icon: Briefcase },
+    { label: "Family Details", done: completedSections.family, icon: User },
+    { label: "Horoscope", done: completedSections.horoscope, icon: Sparkles },
+    { label: "Partner Preferences", done: completedSections.preferences, icon: MapPin },
+  ];
+
   return (
     <div className="min-h-[calc(100vh-4rem)] py-8 page-pattern page-dots relative">
       <div className="container max-w-2xl relative z-10">
+
+        {/* Success Banner */}
+        <Card className="mb-6 border-green-200 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 dark:border-green-800 overflow-hidden animate-fade-in">
+          <CardContent className="p-6 flex items-center gap-5">
+            <img src={profileSuccessImg} alt="Profile created successfully" className="w-20 h-20 object-contain flex-shrink-0" />
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+                <h2 className="text-lg font-display font-bold text-green-800 dark:text-green-300">Your Profile Has Been Created! 🎉</h2>
+              </div>
+              <p className="text-sm text-green-700 dark:text-green-400">
+                Great job! Now set your partner preferences below to get better, more relevant matches tailored just for you.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Profile Completeness */}
+        <Card className="mb-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-primary" />
+                <h3 className="font-display font-semibold text-base">Profile Completeness</h3>
+              </div>
+              <span className="text-2xl font-bold text-primary">{completionPercent}%</span>
+            </div>
+            <Progress value={completionPercent} className="h-3 mb-4" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {sectionItems.map((item) => (
+                <div
+                  key={item.label}
+                  className={`flex items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
+                    item.done
+                      ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  <item.icon className="h-3.5 w-3.5" />
+                  {item.label}
+                  {item.done && <CheckCircle2 className="h-3.5 w-3.5 ml-auto" />}
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">Complete all sections to increase your visibility and get 3x more matches!</p>
+          </CardContent>
+        </Card>
+
         <h1 className="text-3xl font-display font-bold mb-2">Partner Preferences</h1>
         <p className="text-muted-foreground mb-8">Set your preferences to find the best matches</p>
 
         <div className="space-y-6">
+          {/* Basic Preferences */}
           <Card>
             <CardHeader><CardTitle className="text-lg font-sans">Basic Preferences</CardTitle></CardHeader>
             <CardContent className="space-y-5">
@@ -50,6 +117,7 @@ const Preferences = () => {
             </CardContent>
           </Card>
 
+          {/* Religion & Community */}
           <Card>
             <CardHeader><CardTitle className="text-lg font-sans">Religion & Community</CardTitle></CardHeader>
             <CardContent className="space-y-4">
@@ -70,6 +138,7 @@ const Preferences = () => {
             </CardContent>
           </Card>
 
+          {/* Education & Career */}
           <Card>
             <CardHeader><CardTitle className="text-lg font-sans">Education & Career</CardTitle></CardHeader>
             <CardContent className="space-y-4">
@@ -86,6 +155,7 @@ const Preferences = () => {
             </CardContent>
           </Card>
 
+          {/* Location & Lifestyle */}
           <Card>
             <CardHeader><CardTitle className="text-lg font-sans">Location & Lifestyle</CardTitle></CardHeader>
             <CardContent className="space-y-4">
