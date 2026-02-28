@@ -30,3 +30,8 @@ export const checkStatus = async () => {
   const res = await api.get(`/profile/status`);
   return res.data;
 };
+
+export const myProfile = async () => {
+  const res = await api.get(`/profile/me`);
+  return res.data;
+};

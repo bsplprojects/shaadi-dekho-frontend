@@ -6,6 +6,7 @@ import {
   getProfile,
   getAllProfiles,
   checkStatus,
+  myProfile,
 } from "./api";
 import { toast } from "@/hooks/use-toast";
 
@@ -53,6 +54,13 @@ export const useGetProfile = (id: string) =>
     queryKey: ["profile"],
     queryFn: () => getProfile(id),
   });
+
+export const useMyProfile = () => {
+  return useQuery({
+    queryKey: ["my-profile"],
+    queryFn: myProfile,
+  });
+};
 
 export const useGetProfiles = () =>
   useQuery({
