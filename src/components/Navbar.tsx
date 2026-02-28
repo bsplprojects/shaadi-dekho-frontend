@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { Heart, Bell, Menu, X, Home, Users, Search, MessageSquare, Sparkles, UserPen, SlidersHorizontal, Star, Settings } from "lucide-react";
+import { Heart, Bell, Menu, X, Home, Users, Search, MessageSquare, Sparkles, UserPen, SlidersHorizontal, Star, Settings, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -89,6 +89,9 @@ const Navbar = () => {
                     <p className="text-xs text-muted-foreground">{user?.email}</p>
                   </div>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/my-profile")} className="gap-2">
+                    <User className="h-4 w-4" /> My Profile
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate("/edit-profile")} className="gap-2">
                     <UserPen className="h-4 w-4" /> Edit Profile
                   </DropdownMenuItem>

@@ -26,6 +26,7 @@ import HelpCenter from "./pages/HelpCenter";
 import SafetyTips from "./pages/SafetyTips";
 import VerifyEmail from "./pages/VerifyEmail";
 import Profile from "./pages/Profile";
+import MyProfile from "./pages/MyProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -60,6 +61,7 @@ const App = () => (
                 <Route path="/help" element={<HelpCenter />} />
                 <Route path="/safety" element={<SafetyTips />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
+                <Route path="/my-profile" element={<MyProfile />} />
                 <Route path="/profile/:id" element={<Profile />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

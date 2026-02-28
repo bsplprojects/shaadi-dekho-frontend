@@ -12,7 +12,7 @@ import { Progress } from "@/components/ui/progress";
 import {
   Camera, Save, User, Heart, MapPin, Briefcase, Users, Star,
   Sparkles, ImagePlus, X, Wine, Cigarette, UtensilsCrossed, FileText,
-  GraduationCap, Building2, IndianRupee, Clock, Globe
+  GraduationCap, Building2, IndianRupee, Clock, Globe, Palette, Music
 } from "lucide-react";
 import { useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -172,6 +172,7 @@ const EditProfile = () => {
             <TabsTrigger value="family" className="gap-1.5 text-xs"><Users className="h-3.5 w-3.5" />Family</TabsTrigger>
             <TabsTrigger value="horoscope" className="gap-1.5 text-xs"><Star className="h-3.5 w-3.5" />Horoscope</TabsTrigger>
             <TabsTrigger value="photos" className="gap-1.5 text-xs"><ImagePlus className="h-3.5 w-3.5" />Photos</TabsTrigger>
+            <TabsTrigger value="hobbies" className="gap-1.5 text-xs"><Palette className="h-3.5 w-3.5" />Hobbies</TabsTrigger>
           </TabsList>
 
           {/* BASIC DETAILS */}
@@ -568,6 +569,79 @@ const EditProfile = () => {
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground mt-3">Upload up to 6 photos. First photo will be your profile picture.</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          {/* HOBBIES & INTERESTS */}
+          <TabsContent value="hobbies">
+            <Card>
+              <CardHeader><SectionIcon icon={Palette} label="Hobbies & Interests" /></CardHeader>
+              <CardContent className="space-y-6">
+                {/* Hobbies Section */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Music className="h-4 w-4 text-primary" />
+                    <Label className="text-base font-semibold">Hobbies</Label>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Select activities you enjoy in your free time</p>
+                  <div className="flex flex-wrap gap-2">
+                    {["Reading", "Cooking", "Traveling", "Yoga", "Dancing", "Painting", "Gardening", "Photography", "Swimming", "Cycling", "Hiking", "Gaming", "Singing", "Writing", "Crafting", "Fishing", "Meditation", "Running"].map((hobby) => {
+                      const selected = form.hobbies.split(",").map(s => s.trim()).filter(Boolean).includes(hobby);
+                      return (
+                        <button
+                          key={hobby}
+                          type="button"
+                          onClick={() => {
+                            const current = form.hobbies.split(",").map(s => s.trim()).filter(Boolean);
+                            const updated = selected ? current.filter(h => h !== hobby) : [...current, hobby];
+                            handleChange("hobbies", updated.join(", "));
+                          }}
+                          className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+                            selected
+                              ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                              : "bg-accent/50 text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
+                          }`}
+                        >
+                          {hobby}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="border-t border-border" />
+
+                {/* Interests Section */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    <Label className="text-base font-semibold">Interests</Label>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Choose topics and areas that fascinate you</p>
+                  <div className="flex flex-wrap gap-2">
+                    {["Technology", "Finance", "Healthcare", "Art", "Music", "Sports", "Fashion", "Science", "Politics", "Fitness", "Travel", "Food", "Movies", "Spirituality", "Nature", "Startups", "Education", "History"].map((interest) => {
+                      const selected = form.interests.split(",").map(s => s.trim()).filter(Boolean).includes(interest);
+                      return (
+                        <button
+                          key={interest}
+                          type="button"
+                          onClick={() => {
+                            const current = form.interests.split(",").map(s => s.trim()).filter(Boolean);
+                            const updated = selected ? current.filter(i => i !== interest) : [...current, interest];
+                            handleChange("interests", updated.join(", "));
+                          }}
+                          className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+                            selected
+                              ? "bg-secondary text-secondary-foreground border-secondary shadow-sm"
+                              : "bg-accent/50 text-muted-foreground border-border hover:border-secondary/50 hover:text-foreground"
+                          }`}
+                        >
+                          {interest}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
