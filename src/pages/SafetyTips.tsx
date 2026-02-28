@@ -1,6 +1,15 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Shield, Eye, Phone, MapPin, AlertTriangle, UserX, Lock, MessageCircle } from "lucide-react";
+import {
+  Shield,
+  Eye,
+  Phone,
+  MapPin,
+  AlertTriangle,
+  UserX,
+  Lock,
+  MessageCircle,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const tips = [
@@ -28,7 +37,7 @@ const tips = [
     icon: Phone,
     title: "Communicate Safely",
     points: [
-      "Use VivahBandhan's messaging for initial conversations",
+      "Use ShaadiDekho's messaging for initial conversations",
       "Move to phone or video calls only when you feel comfortable",
       "Trust your instincts — if something feels off, it probably is",
       "Don't feel pressured to share photos or information you're not comfortable with",
@@ -73,9 +82,12 @@ const SafetyTips = () => (
     <div className="hero-gradient py-14 text-center">
       <div className="container max-w-2xl">
         <Lock className="h-12 w-12 text-primary-foreground mx-auto mb-4" />
-        <h1 className="text-3xl md:text-4xl font-display font-bold text-primary-foreground mb-3">Safety Tips</h1>
+        <h1 className="text-3xl md:text-4xl font-display font-bold text-primary-foreground mb-3">
+          Safety Tips
+        </h1>
         <p className="text-primary-foreground/70 max-w-lg mx-auto">
-          Your safety is our top priority. Follow these guidelines to have a safe and positive experience on VivahBandhan.
+          Your safety is our top priority. Follow these guidelines to have a
+          safe and positive experience on ShaadiDekho.
         </p>
       </div>
     </div>
@@ -93,7 +105,10 @@ const SafetyTips = () => (
               </div>
               <ul className="space-y-2">
                 {tip.points.map((p, i) => (
-                  <li key={i} className="text-sm text-muted-foreground flex gap-2">
+                  <li
+                    key={i}
+                    className="text-sm text-muted-foreground flex gap-2"
+                  >
                     <span className="text-primary mt-1 shrink-0">•</span>
                     <span>{p}</span>
                   </li>
@@ -108,12 +123,17 @@ const SafetyTips = () => (
 
       <div className="text-center py-8 bg-accent/30 rounded-lg">
         <MessageCircle className="h-8 w-8 text-primary mx-auto mb-3" />
-        <h3 className="font-display font-bold text-lg mb-1">Need to Report Something?</h3>
+        <h3 className="font-display font-bold text-lg mb-1">
+          Need to Report Something?
+        </h3>
         <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto">
-          If you've experienced harassment or encountered a suspicious profile, please report it immediately.
+          If you've experienced harassment or encountered a suspicious profile,
+          please report it immediately.
         </p>
         <Link to="/contact">
-          <button className="btn-gradient text-primary-foreground px-6 py-2.5 rounded-md text-sm font-medium border-t border-t-[hsl(0_0%_100%/0.25)]">Report an Issue</button>
+          <button className="btn-gradient text-primary-foreground px-6 py-2.5 rounded-md text-sm font-medium border-t border-t-[hsl(0_0%_100%/0.25)]">
+            Report an Issue
+          </button>
         </Link>
       </div>
     </div>

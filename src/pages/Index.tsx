@@ -1,17 +1,55 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Heart, Search, Shield, Users, Star, MessageCircle, Camera, BadgeCheck, Home, Phone, MessageSquare, ThumbsUp, Eye } from "lucide-react";
+import {
+  Heart,
+  Search,
+  Shield,
+  Users,
+  Star,
+  MessageCircle,
+  Camera,
+  BadgeCheck,
+  Home,
+  Phone,
+  MessageSquare,
+  ThumbsUp,
+  Eye,
+} from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import heroImage from "@/assets/hero-couple.jpg";
 
 const features = [
-  { icon: Shield, title: "Verified Profiles", desc: "100% verified profiles with ID and photo verification for safety." },
-  { icon: Search, title: "Smart Matchmaking", desc: "AI-powered matching based on preferences, horoscope & lifestyle." },
-  { icon: Users, title: "Large Community", desc: "Millions of active profiles across all communities and regions." },
-  { icon: Star, title: "Premium Experience", desc: "Dedicated relationship managers and priority customer support." },
-  { icon: MessageCircle, title: "Secure Messaging", desc: "End-to-end encrypted chat to connect with your matches privately." },
-  { icon: Heart, title: "Success Stories", desc: "Thousands of happy couples found their soulmate through us." },
+  {
+    icon: Shield,
+    title: "Verified Profiles",
+    desc: "100% verified profiles with ID and photo verification for safety.",
+  },
+  {
+    icon: Search,
+    title: "Smart Matchmaking",
+    desc: "AI-powered matching based on preferences, horoscope & lifestyle.",
+  },
+  {
+    icon: Users,
+    title: "Large Community",
+    desc: "Millions of active profiles across all communities and regions.",
+  },
+  {
+    icon: Star,
+    title: "Premium Experience",
+    desc: "Dedicated relationship managers and priority customer support.",
+  },
+  {
+    icon: MessageCircle,
+    title: "Secure Messaging",
+    desc: "End-to-end encrypted chat to connect with your matches privately.",
+  },
+  {
+    icon: Heart,
+    title: "Success Stories",
+    desc: "Thousands of happy couples found their soulmate through us.",
+  },
 ];
 
 const stats = [
@@ -188,7 +226,7 @@ const Index = () => {
         <div className="container">
           <div className="text-center mb-14">
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-3">
-              Why Choose <span className="text-primary">VivahBandhan</span>?
+              Why Choose <span className="text-primary">ShaadiDekho</span>?
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
               We combine traditional values with modern technology to help you

@@ -20,7 +20,7 @@ export const useRegister = () => {
         title: data.message,
         description: data?.data?.email
           ? "We have sent you an email to verify your account. Please check your inbox."
-          : "Welcome to Vivah Bandhan!",
+          : "Welcome to Shaadi Dekho!",
       });
       client.invalidateQueries(["me"]);
       navigate("/onboarding");

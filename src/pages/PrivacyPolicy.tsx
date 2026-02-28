@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 const sections = [
   {
     title: "1. Information We Collect",
-    content: `When you register on VivahBandhan, we collect personal information including your name, email address, phone number, date of birth, gender, photographs, religious background, educational qualifications, professional details, and partner preferences. We may also collect device information, IP addresses, and usage data to improve our services.`,
+    content: `When you register on ShaadiDekho, we collect personal information including your name, email address, phone number, date of birth, gender, photographs, religious background, educational qualifications, professional details, and partner preferences. We may also collect device information, IP addresses, and usage data to improve our services.`,
   },
   {
     title: "2. How We Use Your Information",
@@ -35,26 +35,35 @@ const sections = [
   },
   {
     title: "9. Contact Us",
-    content: `If you have questions about this Privacy Policy, please contact us at privacy@vivahbandhan.com or call +91 1800-123-4567.`,
+    content: `If you have questions about this Privacy Policy, please contact us at privacy@ShaadiDekho.com or call +91 1800-123-4567.`,
   },
 ];
 
 const PrivacyPolicy = () => (
   <div className="min-h-[calc(100vh-4rem)] py-12 page-pattern page-dots relative">
     <div className="container max-w-3xl relative z-10">
-      <h1 className="text-3xl md:text-4xl font-display font-bold mb-2">Privacy Policy</h1>
-      <p className="text-muted-foreground mb-2">Last updated: February 25, 2026</p>
+      <h1 className="text-3xl md:text-4xl font-display font-bold mb-2">
+        Privacy Policy
+      </h1>
+      <p className="text-muted-foreground mb-2">
+        Last updated: February 25, 2026
+      </p>
       <Separator className="mb-8" />
 
       <p className="text-sm text-muted-foreground mb-8">
-        At VivahBandhan, we are committed to protecting the privacy and security of our members. This Privacy Policy explains how we collect, use, and safeguard your personal information when you use our matrimonial platform.
+        At ShaadiDekho, we are committed to protecting the privacy and security
+        of our members. This Privacy Policy explains how we collect, use, and
+        safeguard your personal information when you use our matrimonial
+        platform.
       </p>
 
       <div className="space-y-8">
         {sections.map((s) => (
           <div key={s.title}>
             <h2 className="text-lg font-semibold font-sans mb-2">{s.title}</h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">{s.content}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {s.content}
+            </p>
           </div>
         ))}
       </div>

@@ -61,7 +61,7 @@ const Auth = () => {
           </h2>
           <p className="text-primary-foreground/75 text-base mb-8 max-w-sm">
             Join millions who found love, companionship, and a lifelong bond on
-            VivahBandhan.
+            ShaadiDekho.
           </p>
           <div className="flex gap-6">
             {[

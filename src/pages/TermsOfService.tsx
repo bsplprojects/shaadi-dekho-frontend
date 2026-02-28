@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 const sections = [
   {
     title: "1. Eligibility",
-    content: `You must be at least 18 years of age (21 for males in India as per law) to register on VivahBandhan. By creating an account, you confirm that you are legally eligible for marriage and that all information provided is accurate and truthful.`,
+    content: `You must be at least 18 years of age (21 for males in India as per law) to register on ShaadiDekho. By creating an account, you confirm that you are legally eligible for marriage and that all information provided is accurate and truthful.`,
   },
   {
     title: "2. Account Registration",
@@ -11,11 +11,11 @@ const sections = [
   },
   {
     title: "3. Acceptable Use",
-    content: `You agree to use VivahBandhan solely for the purpose of finding a life partner. You must not use the platform for commercial purposes, harassment, fraud, or any illegal activity. Sharing false information, uploading inappropriate content, or impersonating another person is strictly prohibited.`,
+    content: `You agree to use ShaadiDekho solely for the purpose of finding a life partner. You must not use the platform for commercial purposes, harassment, fraud, or any illegal activity. Sharing false information, uploading inappropriate content, or impersonating another person is strictly prohibited.`,
   },
   {
     title: "4. Profile Content",
-    content: `You retain ownership of content you upload. By posting content, you grant VivahBandhan a non-exclusive license to display it on the platform. We reserve the right to remove any content that violates our guidelines without prior notice.`,
+    content: `You retain ownership of content you upload. By posting content, you grant ShaadiDekho a non-exclusive license to display it on the platform. We reserve the right to remove any content that violates our guidelines without prior notice.`,
   },
   {
     title: "5. Membership & Payments",
@@ -23,11 +23,11 @@ const sections = [
   },
   {
     title: "6. Privacy",
-    content: `Your use of VivahBandhan is also governed by our Privacy Policy. By using our services, you consent to the collection and use of your information as described in the Privacy Policy.`,
+    content: `Your use of ShaadiDekho is also governed by our Privacy Policy. By using our services, you consent to the collection and use of your information as described in the Privacy Policy.`,
   },
   {
     title: "7. Limitation of Liability",
-    content: `VivahBandhan serves as a platform to connect individuals seeking marriage. We do not guarantee the accuracy of user profiles, the behavior of members, or the success of any relationship. We are not liable for any damages arising from your interactions with other members.`,
+    content: `ShaadiDekho serves as a platform to connect individuals seeking marriage. We do not guarantee the accuracy of user profiles, the behavior of members, or the success of any relationship. We are not liable for any damages arising from your interactions with other members.`,
   },
   {
     title: "8. Termination",
@@ -35,7 +35,7 @@ const sections = [
   },
   {
     title: "9. Dispute Resolution",
-    content: `Any disputes arising from the use of VivahBandhan shall be governed by the laws of India. Disputes will be resolved through arbitration in Gurugram, Haryana, under the Arbitration and Conciliation Act, 1996.`,
+    content: `Any disputes arising from the use of ShaadiDekho shall be governed by the laws of India. Disputes will be resolved through arbitration in Gurugram, Haryana, under the Arbitration and Conciliation Act, 1996.`,
   },
   {
     title: "10. Changes to Terms",
@@ -46,19 +46,27 @@ const sections = [
 const TermsOfService = () => (
   <div className="min-h-[calc(100vh-4rem)] py-12 page-pattern page-dots relative">
     <div className="container max-w-3xl relative z-10">
-      <h1 className="text-3xl md:text-4xl font-display font-bold mb-2">Terms of Service</h1>
-      <p className="text-muted-foreground mb-2">Last updated: February 25, 2026</p>
+      <h1 className="text-3xl md:text-4xl font-display font-bold mb-2">
+        Terms of Service
+      </h1>
+      <p className="text-muted-foreground mb-2">
+        Last updated: February 25, 2026
+      </p>
       <Separator className="mb-8" />
 
       <p className="text-sm text-muted-foreground mb-8">
-        Welcome to VivahBandhan. By accessing or using our platform, you agree to be bound by these Terms of Service. Please read them carefully before using our services.
+        Welcome to ShaadiDekho. By accessing or using our platform, you agree to
+        be bound by these Terms of Service. Please read them carefully before
+        using our services.
       </p>
 
       <div className="space-y-8">
         {sections.map((s) => (
           <div key={s.title}>
             <h2 className="text-lg font-semibold font-sans mb-2">{s.title}</h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">{s.content}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {s.content}
+            </p>
           </div>
         ))}
       </div>

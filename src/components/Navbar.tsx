@@ -53,7 +53,7 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2">
           <Heart className="h-7 w-7 text-primary fill-primary" />
           <span className="text-xl font-display font-bold text-foreground">
-            Vivah<span className="text-primary">Bandhan</span>
+            Shaadi<span className="text-primary">Dekho</span>
           </span>
         </Link>
 
