@@ -11,6 +11,7 @@ import { useMe } from "@/features/auth/hook";
 interface User {
   id: string;
   email: string;
+  name?: string;
   phone: string;
   onboarded?: boolean;
   isEmailVerified?: boolean;
