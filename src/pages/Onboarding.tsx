@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Check } from "lucide-react";
+import { Check, LoaderCircle } from "lucide-react";
 import BasicStep from "../components/steps/BasicStep";
 import ProfessionalStep from "../components/steps/ProfessionalStep";
 import EducationStep from "../components/steps/EducationStep";
@@ -32,6 +32,7 @@ const Onboarding = () => {
 
   const methods = useForm<profilePayload>({
     mode: "onBlur",
+    shouldUnregister: false,
     defaultValues: {
       basicDetails: {},
       professional: {},
@@ -49,18 +50,19 @@ const Onboarding = () => {
   } = methods;
 
   const next = async () => {
-    const fields = STEP_FIELDS[step];
+    const fields = STEP_FIELDS[step] ?? [];
 
-    const isStepValid = await trigger(fields as any);
-
+    const isStepValid = await trigger(fields as any, { shouldFocus: true });
     if (!isStepValid) return;
 
     if (step < steps.length - 1) {
-      setStep(step + 1);
-    } else {
-      methods.handleSubmit(onSubmit)();
+      setStep((s) => s + 1);
+      return;
     }
+
+    methods.handleSubmit(onSubmit)();
   };
+
   const prev = () => {
     if (step > 0) setStep(step - 1);
   };
@@ -125,7 +127,7 @@ const Onboarding = () => {
           </CardHeader>
           <CardContent className="space-y-5">
             <FormProvider {...methods}>
-              <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <form>
                 {step === 0 && <BasicStep />}
                 {step === 1 && <ProfessionalStep />}
                 {step === 2 && <EducationStep />}
@@ -138,17 +140,31 @@ const Onboarding = () => {
                 <div className="flex justify-between pt-4">
                   <Button
                     variant="outline"
+                    type="button"
                     onClick={prev}
                     disabled={step === 0}
                   >
                     Previous
                   </Button>
                   {step === steps.length - 1 ? (
-                    <Button type="submit">Complete Profile</Button>
+                    <Button
+                      type="button"
+                      onClick={next}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <LoaderCircle className="animate-spin" />
+                          Creating your profile...
+                        </>
+                      ) : (
+                        "Complete Profile"
+                      )}
+                    </Button>
                   ) : (
                     <Button
-                      onClick={next}
                       type="button"
+                      onClick={next}
                       disabled={isSubmitting}
                     >
                       Next Step

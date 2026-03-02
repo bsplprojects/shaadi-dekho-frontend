@@ -54,5 +54,26 @@ export interface profilePayload {
     about: string;
     status: string;
   };
+  horoscope?: {
+    tob: string;
+    pob: string;
+    rashi: string;
+    nakshatra: string;
+    gotra: string;
+    notes: string;
+    manglik: string;
+  };
   images: File[];
+  hobbies?: string[];
+  interests?: string[];
+}
+
+export interface HoroscopePayload {
+  tob: string;
+  pob: string;
+  rashi: string;
+  nakshatra: string;
+  gotra: string;
+  notes: string;
+  manglik: string;
 }

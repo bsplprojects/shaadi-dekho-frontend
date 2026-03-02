@@ -1,4 +1,5 @@
 import { profilePayload } from "@/features/profile/types";
+import { Clock, Eye, MapPin, Star, UserCheck, Users } from "lucide-react";
 
 export const steps = [
   "Basic Details",
@@ -98,6 +99,24 @@ export const religions = [
   "Others",
 ];
 
+export const employmentSectors = [
+  { value: "private", label: "Private Sector" },
+  { value: "public", label: "Public / Government" },
+  { value: "healthcare", label: "Healthcare" },
+  { value: "education", label: "Education" },
+  { value: "engineering", label: "Engineering & Technical" },
+  { value: "manufacturing", label: "Manufacturing & Industrial" },
+  { value: "business", label: "Business / Self-Employed" },
+  { value: "accounting", label: "Accounting / Legal" },
+  { value: "transports", label: "Transport & Logistics" },
+  { value: "construction", label: "Construction & Real Estate" },
+  { value: "media", label: "Creative & Media" },
+  { value: "retail", label: "Retail & Hospitality" },
+  { value: "agriculture", label: "Agriculture & Allied" },
+  { value: "security", label: "Security & Services" },
+  { value: "others", label: "Others" },
+];
+
 export const languages = [
   "Hindi",
   "Marathi",
@@ -123,6 +142,18 @@ export const STEP_FIELDS: Record<
     "basicDetails.dob",
     "basicDetails.age",
   ],
+  1: ["professional.employment", "professional.company", "professional.income"],
+  2: ["education.highestQualification", "education.college"],
+  3: ["religion.religion", "religion.caste", "religion.community"],
+  4: [
+    "lifestyle.food",
+    "lifestyle.drinking",
+    "lifestyle.smoking",
+    "lifestyle.about",
+  ],
+  5: ["location.country", "location.state", "location.city"],
+  6: ["family.fatherOccupation", "family.motherOccupation"],
+  7: ["images"],
 };
 
 export const SECTION_FIELD_MAP = {
@@ -165,3 +196,150 @@ export const SECTION_FIELD_MAP = {
   Hobbies: ["hobbies"],
   Interests: ["interests"],
 };
+
+export const nakshatras = [
+  "Ashwini",
+  "Bharani",
+  "Krittika",
+  "Rohini",
+  "Mrigashira",
+  "Ardra",
+  "Punarvasu",
+  "Pushya",
+  "Ashlesha",
+  "Magha",
+  "Purva Phalguni",
+  "Uttara Phalguni",
+  "Hasta",
+  "Chitra",
+  "Swati",
+  "Vishakha",
+  "Anuradha",
+  "Jyeshtha",
+  "Mula",
+  "Purva Ashadha",
+  "Uttara Ashadha",
+  "Shravana",
+  "Dhanishta",
+  "Shatabhisha",
+  "Purva Bhadrapada",
+  "Uttara Bhadrapada",
+  "Revati",
+];
+
+export const rashis = [
+  "Mesha (Aries)",
+  "Vrishabha (Taurus)",
+  "Mithuna (Gemini)",
+  "Karka (Cancer)",
+  "Simha (Leo)",
+  "Kanya (Virgo)",
+  "Tula (Libra)",
+  "Vrishchika (Scorpio)",
+  "Dhanu (Sagittarius)",
+  "Makara (Capricorn)",
+  "Kumbha (Aquarius)",
+  "Meena (Pisces)",
+];
+
+export const sidebarSections = [
+  {
+    title: "All Matches",
+    items: [
+      {
+        label: "Your Matches",
+        description: "View all the profiles that match your preferences",
+        icon: Users,
+      },
+    ],
+  },
+  {
+    title: "Based on activity",
+    items: [
+      {
+        label: "Shortlisted by you",
+        description: "Matches you have shortlisted",
+        icon: Star,
+      },
+      {
+        label: "Viewed you",
+        description: "Matches who have viewed your profile",
+        icon: Eye,
+      },
+      {
+        label: "Shortlisted you",
+        description: "Matches who have shortlisted your profile",
+        icon: UserCheck,
+      },
+      {
+        label: "Viewed by you",
+        description: "Matches you have viewed",
+        icon: Eye,
+      },
+    ],
+  },
+  {
+    title: "Recently joined & nearby matches",
+    items: [
+      {
+        label: "Recently joined",
+        description: "New profiles that match your preferences",
+        icon: Clock,
+      },
+      {
+        label: "Nearby matches",
+        description: "Matches near your location",
+        icon: MapPin,
+      },
+    ],
+  },
+];
+
+export const quickFilters = [
+  "Newly joined",
+  "Not seen",
+  "Profiles with photo",
+  "Profiles with horoscope",
+];
+
+export const hobbies = [
+  "Reading",
+  "Cooking",
+  "Traveling",
+  "Yoga",
+  "Dancing",
+  "Painting",
+  "Gardening",
+  "Photography",
+  "Swimming",
+  "Cycling",
+  "Hiking",
+  "Gaming",
+  "Singing",
+  "Writing",
+  "Crafting",
+  "Fishing",
+  "Meditation",
+  "Running",
+];
+
+export const interests = [
+  "Technology",
+  "Finance",
+  "Healthcare",
+  "Art",
+  "Music",
+  "Sports",
+  "Fashion",
+  "Science",
+  "Politics",
+  "Fitness",
+  "Travel",
+  "Food",
+  "Movies",
+  "Spirituality",
+  "Nature",
+  "Startups",
+  "Education",
+  "History",
+];

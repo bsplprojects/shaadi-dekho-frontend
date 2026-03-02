@@ -14,8 +14,9 @@ import {
   SlidersHorizontal,
   Star,
   Settings,
+  User,
   Phone,
-  IndianRupee,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -115,11 +116,12 @@ const Navbar = () => {
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
-                    onClick={() => navigate("/edit-profile")}
+                    onClick={() => navigate("/my-profile")}
                     className="gap-2"
                   >
-                    <UserPen className="h-4 w-4" /> Edit Profile
+                    <User className="h-4 w-4" /> My Profile
                   </DropdownMenuItem>
+
                   <DropdownMenuItem
                     onClick={() => navigate("/edit-preferences")}
                     className="gap-2"
@@ -150,7 +152,7 @@ const Navbar = () => {
                     onClick={() => logout.mutate()}
                     className="text-destructive gap-2"
                   >
-                    <X className="h-4 w-4" /> Logout
+                    <LogOut className="h-4 w-4" /> Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

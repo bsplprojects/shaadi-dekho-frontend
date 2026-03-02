@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { occupations, salaries } from "@/lib/constants";
+import { employmentSectors, occupations, salaries } from "@/lib/constants";
 import { Textarea } from "../ui/textarea";
 import { Controller, useFormContext } from "react-hook-form";
 import { profilePayload } from "@/features/profile/types";
@@ -104,8 +104,14 @@ const ProfessionalStep = () => {
                 </SelectTrigger>
 
                 <SelectContent>
-                  <SelectItem value="private">Private</SelectItem>
-                  <SelectItem value="public">Public</SelectItem>
+                  {employmentSectors.map((i) => (
+                    <SelectItem
+                      key={i.value}
+                      value={i.value.toLowerCase().replace(/ /g, "_")}
+                    >
+                      {i.label}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

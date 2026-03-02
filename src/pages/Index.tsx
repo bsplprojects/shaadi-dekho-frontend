@@ -60,7 +60,7 @@ const stats = [
 ];
 
 const Index = () => {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -86,7 +86,7 @@ const Index = () => {
               love, companionship, and a lifelong bond.
             </p>
             <div className="flex flex-wrap gap-3">
-              {isAuthenticated ? (
+              {true ? (
                 <Button size="lg" onClick={() => navigate("/matches")}>
                   View Matches
                 </Button>
@@ -130,7 +130,7 @@ const Index = () => {
       </section>
 
       {/* Complete Your Profile */}
-      {isAuthenticated && (
+      {true && (
         <section className="py-10 bg-accent/30">
           <div className="container max-w-4xl">
             <h2 className="text-xl font-display font-bold mb-1">
@@ -211,7 +211,7 @@ const Index = () => {
               <Button
                 size="lg"
                 onClick={() =>
-                  navigate(isAuthenticated ? "/matches" : "/auth?mode=signup")
+                  navigate(true ? "/matches" : "/auth?mode=signup")
                 }
               >
                 See membership plans
@@ -290,7 +290,7 @@ const Index = () => {
                 variant="outline"
                 className="w-full"
                 onClick={() =>
-                  navigate(isAuthenticated ? "/matches" : "/auth?mode=signup")
+                  navigate(true ? "/matches" : "/auth?mode=signup")
                 }
               >
                 Get Started
@@ -332,7 +332,7 @@ const Index = () => {
               <Button
                 className="w-full"
                 onClick={() =>
-                  navigate(isAuthenticated ? "/matches" : "/auth?mode=signup")
+                  navigate(true ? "/matches" : "/auth?mode=signup")
                 }
               >
                 Upgrade to Gold
@@ -372,7 +372,7 @@ const Index = () => {
                 variant="outline"
                 className="w-full"
                 onClick={() =>
-                  navigate(isAuthenticated ? "/matches" : "/auth?mode=signup")
+                  navigate(true ? "/matches" : "/auth?mode=signup")
                 }
               >
                 Go Diamond
@@ -394,11 +394,9 @@ const Index = () => {
           </p>
           <Button
             size="lg"
-            onClick={() =>
-              navigate(isAuthenticated ? "/matches" : "/auth?mode=signup")
-            }
+            onClick={() => navigate(true ? "/matches" : "/auth?mode=signup")}
           >
-            {isAuthenticated ? "Browse Matches" : "Get Started Free"}
+            {true ? "Browse Matches" : "Get Started Free"}
           </Button>
         </div>
       </section>

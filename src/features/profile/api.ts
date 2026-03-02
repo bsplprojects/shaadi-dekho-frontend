@@ -1,5 +1,5 @@
 import { api } from "../../lib/axios";
-import { profilePayload } from "./types";
+import { HoroscopePayload } from "./types";
 
 export const createProfile = async (data: FormData) => {
   const res = await api.post("/profile/new", data);
@@ -11,8 +11,14 @@ export const getProfile = async (id: string) => {
   return res.data;
 };
 
-export const updateProfile = async (id: string) => {
-  const res = await api.patch(`/profile/${id}`);
+export const updateProfile = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: FormData;
+}) => {
+  const res = await api.patch(`/profile/${id}`, data);
   return res.data;
 };
 
@@ -33,5 +39,10 @@ export const checkStatus = async () => {
 
 export const myProfile = async () => {
   const res = await api.get(`/profile/me`);
+  return res.data;
+};
+
+export const addHoroscope = async (data: HoroscopePayload) => {
+  const res = await api.post(`/profile/horoscope`, data);
   return res.data;
 };

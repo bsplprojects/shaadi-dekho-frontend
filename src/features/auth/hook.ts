@@ -8,6 +8,9 @@ export const useMe = () =>
   useQuery({
     queryKey: ["me"],
     queryFn: me,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
   });
 
 export const useRegister = () => {
@@ -39,9 +42,13 @@ export const useLogin = () => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: login,
-    onSuccess: () => {
+    onSuccess: (data) => {
       client.invalidateQueries(["me"]);
-      navigate("/matches");
+      if (data?.data?.onBoarded) {
+        navigate("/matches");
+      } else {
+        navigate("/onboarding");
+      }
     },
     onError: (error: any) => {
       toast({
@@ -53,13 +60,12 @@ export const useLogin = () => {
 };
 
 export const useLogout = () => {
-  const { setIsAuthenticated, setUser } = useAuth();
+  const { setUser } = useAuth();
   const client = useQueryClient();
   const navigate = useNavigate();
   return useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      setIsAuthenticated(false);
       setUser(null);
       client.invalidateQueries(["me"]);
       navigate("/auth?mode=login");

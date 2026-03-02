@@ -7,18 +7,13 @@ import {
   getAllProfiles,
   checkStatus,
   myProfile,
+  addHoroscope,
 } from "./api";
 import { toast } from "@/hooks/use-toast";
 
 export const useCreateProfile = () =>
   useMutation({
     mutationFn: createProfile,
-    onSuccess: (data) => {
-      toast({
-        title: data.message,
-        description: "",
-      });
-    },
     onError: (error: any) => {
       toast({
         title: error.response.data.message,
@@ -30,6 +25,12 @@ export const useCreateProfile = () =>
 export const useUpdateProfile = () =>
   useMutation({
     mutationFn: updateProfile,
+    onSuccess: (data) => {
+      toast({
+        title: data.message,
+        description: "Changes have been saved",
+      });
+    },
     onError: (error: any) => {
       toast({
         title: error.response.data.message,
@@ -72,5 +73,17 @@ export const useProfileStatus = () => {
   return useQuery({
     queryKey: ["profile-status"],
     queryFn: checkStatus,
+  });
+};
+
+export const useAddHoroscope = () => {
+  return useMutation({
+    mutationFn: addHoroscope,
+    onSuccess: (data) => {
+      toast({
+        title: data.message,
+        description: "",
+      });
+    },
   });
 };

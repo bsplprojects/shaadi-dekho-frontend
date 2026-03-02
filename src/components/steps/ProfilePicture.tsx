@@ -71,6 +71,7 @@ const ProfilePicture = () => {
                 alt="Profile"
               />
               <button
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   removePhoto(0);
@@ -103,6 +104,7 @@ const ProfilePicture = () => {
                   alt={`Photo ${i + 1}`}
                 />
                 <button
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     removePhoto(i);

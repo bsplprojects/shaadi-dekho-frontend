@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -28,27 +28,38 @@ import {
   ImagePlus,
   X,
   Wine,
-  Cigarette,
-  UtensilsCrossed,
   FileText,
-  GraduationCap,
-  Building2,
   IndianRupee,
   Clock,
   Globe,
+  Palette,
+  Music,
+  LoaderCircle,
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useMyProfile, useProfileStatus } from "@/features/profile/hook";
+import {
+  useMyProfile,
+  useProfileStatus,
+  useUpdateProfile,
+} from "@/features/profile/hook";
 import { Controller, useForm } from "react-hook-form";
 import { profilePayload } from "@/features/profile/types";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   degrees,
+  employmentSectors,
   heights,
+  hobbies,
+  interests,
+  nakshatras,
   occupations,
+  rashis,
   religions,
   salaries,
 } from "@/lib/constants";
+import horoscope from "../assets/horoscope.png";
+
+const MAX_PHOTOS = 6;
+type ImageItem = string | File;
 
 const SectionIcon = ({
   icon: Icon,
@@ -66,20 +77,39 @@ const SectionIcon = ({
 );
 
 const EditProfile = () => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { user } = useAuth();
   const { data: profileStatus } = useProfileStatus();
   const { data: profileData } = useMyProfile();
+  const edit = useUpdateProfile();
 
   const { data } = profileData ?? {};
-  console.log(data);
 
   const {
     register,
     reset,
     control,
     formState: { isSubmitting },
-  } = useForm<profilePayload>();
+    setValue,
+    handleSubmit,
+    watch,
+  } = useForm<profilePayload>({
+    mode: "onBlur",
+    defaultValues: {
+      basicDetails: {},
+      professional: {},
+      religion: {},
+      lifestyle: {},
+      location: {},
+      family: {},
+      images: [],
+      hobbies: [],
+      interests: [],
+    },
+  });
+
+  const images = watch("images") || [];
 
   useEffect(() => {
     if (!data) return;
@@ -91,21 +121,108 @@ const EditProfile = () => {
           ? new Date(data?.basicDetails?.dob).toISOString().split("T")[0]
           : "",
       },
-      horoscope: {
-        ...data.horoscope,
-        tob: data.horoscope?.tob
-          ? new Date(data.horoscope.tob)
-              .toISOString()
-              .split("T")[1]
-              ?.slice(0, 5)
-          : "",
-      },
     });
   }, [data, reset]);
 
+  const selectedHobbies = watch("hobbies") || [];
+  const selectedInterests = watch("interests") || [];
+
+  const toggleHobby = (hobby: string) => {
+    if (selectedHobbies.includes(hobby)) {
+      setValue(
+        "hobbies",
+        selectedHobbies.filter((h) => h !== hobby),
+        { shouldValidate: true },
+      );
+    } else {
+      setValue("hobbies", [...selectedHobbies, hobby], {
+        shouldValidate: true,
+      });
+    }
+  };
+
+  const toggleInterests = (interest: string) => {
+    if (selectedInterests.includes(interest)) {
+      setValue(
+        "interests",
+        selectedInterests.filter((h) => h !== interest),
+        { shouldValidate: true },
+      );
+    } else {
+      setValue("interests", [...selectedInterests, interest], {
+        shouldValidate: true,
+      });
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const remainingSlots = MAX_PHOTOS - images.length;
+    if (remainingSlots <= 0) return;
+
+    const selectedFiles = Array.from(files).slice(0, remainingSlots);
+
+    setValue("images", [...images, ...selectedFiles], {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+
+    e.target.value = "";
+  };
+
+  const removeImage = (index: number) => {
+    const updated = images.filter((_, i) => i !== index);
+    setValue("images", updated, {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
+
+  const onSubmit = async (data: profilePayload) => {
+    const payload = {
+      ...data,
+      basicDetails: {
+        ...data.basicDetails,
+        dob: data.basicDetails?.dob
+          ? new Date(data.basicDetails.dob).toISOString()
+          : null,
+      },
+    };
+
+    const formData = new FormData();
+    payload.images.forEach((img) => {
+      if (img instanceof File) {
+        formData.append("images", img);
+      }
+    });
+
+    formData.append("basicDetails", JSON.stringify(payload.basicDetails));
+    formData.append("professional", JSON.stringify(payload.professional));
+    formData.append("religion", JSON.stringify(payload.religion));
+    formData.append("lifestyle", JSON.stringify(payload.lifestyle));
+    formData.append("location", JSON.stringify(payload.location));
+    formData.append("family", JSON.stringify(payload.family));
+    formData.append("hobbies", JSON.stringify(payload.hobbies));
+    formData.append("interests", JSON.stringify(payload.interests));
+
+    edit.mutate(
+      { id: data?._id, data: formData },
+      {
+        onSuccess: () => {
+          navigate("/my-profile");
+        },
+      },
+    );
+  };
+
   return (
     <div className="min-h-[calc(100vh-4rem)] py-8 page-pattern page-dots relative">
-      <div className="container max-w-3xl relative z-10">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="container max-w-3xl relative z-10"
+      >
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-display font-bold mb-1">Edit Profile</h1>
@@ -120,13 +237,20 @@ const EditProfile = () => {
             <div className="flex flex-col sm:flex-row items-center gap-6">
               <div className="relative">
                 <Avatar className="h-28 w-28 border-4 border-primary/20 shadow-md">
+                  <AvatarImage
+                    src={data?.images?.[0]}
+                    className="object-cover"
+                  />
                   <AvatarFallback className="bg-accent text-accent-foreground text-3xl font-semibold">
                     {data?.basicDetails?.name?.charAt(0) || "U"}
                   </AvatarFallback>
                 </Avatar>
-                <button className="absolute bottom-1 right-1 bg-primary text-primary-foreground rounded-full p-2 shadow-md hover:scale-105 transition-transform">
+                {/* <button
+                  type="button"
+                  className="absolute bottom-1 right-1 bg-primary text-primary-foreground rounded-full p-2 shadow-md hover:scale-105 transition-transform"
+                >
                   <Camera className="h-4 w-4" />
-                </button>
+                </button> */}
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <h2 className="text-xl font-semibold font-sans">
@@ -193,6 +317,11 @@ const EditProfile = () => {
             <TabsTrigger value="photos" className="gap-1.5 text-xs">
               <ImagePlus className="h-3.5 w-3.5" />
               Photos
+            </TabsTrigger>
+
+            <TabsTrigger value="hobbies" className="gap-1.5 text-xs">
+              <Palette className="h-3.5 w-3.5" />
+              Hobbies
             </TabsTrigger>
           </TabsList>
 
@@ -678,8 +807,16 @@ const EditProfile = () => {
                             </SelectTrigger>
 
                             <SelectContent>
-                              <SelectItem value="private">Private</SelectItem>
-                              <SelectItem value="public">Public</SelectItem>
+                              {employmentSectors.map((i) => (
+                                <SelectItem
+                                  key={i.value}
+                                  value={i.value
+                                    .toLowerCase()
+                                    .replace(/ /g, "_")}
+                                >
+                                  {i.label}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         </div>
@@ -960,44 +1097,124 @@ const EditProfile = () => {
               <CardHeader>
                 <SectionIcon icon={Star} label="Horoscope Details" />
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label className="flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5 text-muted-foreground" />{" "}
-                      Time of Birth
-                    </Label>
-                    <Input type="time" />
+              {!data?.horoscope ? (
+                <>
+                  <CardContent className="space-y-4">
+                    <div className="grid place-items-center gap-4">
+                      <img src={horoscope} alt="horoscope" width={150} />
+                      <h1 className="">
+                        You have not added your horoscope details
+                      </h1>
+                      <Link to={"/horoscope"}>
+                        <Button type="button">Add Horoscope</Button>
+                      </Link>
+                    </div>
+                  </CardContent>
+                </>
+              ) : (
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="flex items-center gap-1.5">
+                        <Clock className="h-3.5 w-3.5 text-muted-foreground" />{" "}
+                        Time of Birth
+                      </Label>
+                      <Input type="time" {...register("horoscope.tob")} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Place of Birth</Label>
+                      <Input
+                        placeholder="City of birth"
+                        {...register("horoscope.pob")}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Rashi (Moon Sign)</Label>
+                      <Controller
+                        name="horoscope.rashi"
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Rashi" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {rashis.map((r) => (
+                                <SelectItem key={r} value={r.toLowerCase()}>
+                                  {r}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Nakshatra</Label>
+                      <Controller
+                        name="horoscope.nakshatra"
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Nakshatra" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {nakshatras.map((n) => (
+                                <SelectItem key={n} value={n.toLowerCase()}>
+                                  {n}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Gotra</Label>
+                      <Input
+                        placeholder="e.g., Vrishabha"
+                        {...register("horoscope.gotra")}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Manglik</Label>
+                      <Controller
+                        name="horoscope.manglik"
+                        control={control}
+                        render={({ field }) => (
+                          <Select
+                            onValueChange={field.onChange}
+                            value={field.value}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Manglik status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="non-manglik">
+                                Non-Manglik
+                              </SelectItem>
+                              <SelectItem value="manglik">Manglik</SelectItem>
+                              <SelectItem value="anshik-manglik">
+                                Anshik Manglik
+                              </SelectItem>
+                              <SelectItem value="dont-know">
+                                Don't Know
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label>Place of Birth</Label>
-                    <Input placeholder="City of birth" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Star / Nakshatra</Label>
-                    <Input placeholder="e.g., Rohini" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Raasi / Moon Sign</Label>
-                    <Input placeholder="e.g., Vrishabha" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Manglik</Label>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="yes">Yes</SelectItem>
-                        <SelectItem value="no">No</SelectItem>
-                        <SelectItem value="partial">
-                          Partial (Anshik)
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </CardContent>
+                </CardContent>
+              )}
             </Card>
           </TabsContent>
 
@@ -1015,30 +1232,51 @@ const EditProfile = () => {
                   className="hidden"
                 />
                 <div className="grid grid-cols-3 gap-3">
-                  {/* {photos.map((src, idx) => (
-                    <div
-                      key={idx}
-                      className="relative aspect-square rounded-xl overflow-hidden border-2 border-border group"
-                    >
-                      <img
-                        src={src}
-                        alt={`Photo ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                      <button className="absolute top-1.5 right-1.5 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <X className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  ))} */}
-                  {/* {photos.length < 6 && (
+                  {images.map((img, idx) => {
+                    const src =
+                      typeof img === "string" ? img : URL.createObjectURL(img);
+
+                    return (
+                      <div
+                        key={idx}
+                        className="relative aspect-square rounded-xl overflow-hidden border-2 border-border group"
+                      >
+                        <img
+                          src={src}
+                          alt={`Photo ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+
+                        <button
+                          type="button"
+                          onClick={() => removeImage(idx)}
+                          className="absolute top-1.5 right-1.5 bg-destructive text-destructive-foreground rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    );
+                  })}
+
+                  {images.length < MAX_PHOTOS && (
                     <button
+                      type="button"
                       onClick={() => fileInputRef.current?.click()}
                       className="aspect-square rounded-xl border-2 border-dashed border-primary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:border-primary hover:text-primary transition-colors bg-accent/30"
                     >
                       <Camera className="h-6 w-6" />
                       <span className="text-xs font-medium">Add Photo</span>
                     </button>
-                  )} */}
+                  )}
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    hidden
+                    onChange={handleFileChange}
+                  />
                 </div>
                 <p className="text-xs text-muted-foreground mt-3">
                   Upload up to 6 photos. First photo will be your profile
@@ -1047,21 +1285,100 @@ const EditProfile = () => {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* HOBBIES & INTERESTS */}
+          <TabsContent value="hobbies">
+            <Card>
+              <CardHeader>
+                <SectionIcon icon={Palette} label="Hobbies & Interests" />
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Hobbies Section */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Music className="h-4 w-4 text-primary" />
+                    <Label className="text-base font-semibold">Hobbies</Label>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Select activities you enjoy in your free time
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {hobbies.map((hobby) => {
+                      const isSelected = selectedHobbies.includes(hobby);
+                      return (
+                        <button
+                          key={hobby}
+                          onClick={() => toggleHobby(hobby)}
+                          type="button"
+                          className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+                            isSelected
+                              ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                              : "bg-accent/50 text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
+                          }`}
+                        >
+                          {hobby}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="border-t border-border" />
+
+                {/* Interests Section */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    <Label className="text-base font-semibold">Interests</Label>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Choose topics and areas that fascinate you
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {interests.map((interest) => {
+                      const isSelected = selectedInterests.includes(interest);
+                      return (
+                        <button
+                          key={interest}
+                          type="button"
+                          onClick={() => toggleInterests(interest)}
+                          className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+                            isSelected
+                              ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                              : "bg-accent/50 text-muted-foreground border-border hover:border-primary/50 hover:text-foreground"
+                          }`}
+                        >
+                          {interest}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
 
         {/* Save */}
         <div className="flex gap-3 justify-end py-8">
-          <Button variant="outline" onClick={() => navigate(-1)}>
+          <Button type="button" variant="outline" onClick={() => navigate(-1)}>
             Cancel
           </Button>
           <Button
-            // onClick={handleSave}
+            type="submit"
             className="gap-2 btn-gradient text-primary-foreground"
           >
-            <Save className="h-4 w-4" /> Save Changes
+            <Save className="h-4 w-4" />
+            {isSubmitting ? (
+              <>
+                <LoaderCircle className="animate-spin" /> Saving...
+              </>
+            ) : (
+              "Save Changes"
+            )}
           </Button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
