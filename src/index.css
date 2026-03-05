@@ -47,15 +47,32 @@
     /* Custom tokens */
     --primary-dark: 346 55% 42%;
     --primary-light: 346 60% 68%;
-    --hero-gradient: linear-gradient(135deg, hsl(346 55% 55%), hsl(346 55% 42%));
-    --hero-gradient-soft: linear-gradient(135deg, hsl(346 55% 55% / 0.06), hsl(340 30% 94% / 0.5));
+    --hero-gradient: linear-gradient(
+      135deg,
+      hsl(346 55% 55%),
+      hsl(346 55% 42%)
+    );
+    --hero-gradient-soft: linear-gradient(
+      135deg,
+      hsl(346 55% 55% / 0.06),
+      hsl(340 30% 94% / 0.5)
+    );
     --rose-glow: 346 50% 65%;
     --warm-cream: 30 40% 97%;
     --gold-accent: 38 70% 55%;
 
     /* Page decoration */
-    --page-pattern: radial-gradient(circle at 20% 20%, hsl(346 55% 55% / 0.03) 0%, transparent 50%),
-                     radial-gradient(circle at 80% 80%, hsl(340 30% 94% / 0.4) 0%, transparent 50%);
+    --page-pattern:
+      radial-gradient(
+        circle at 20% 20%,
+        hsl(346 55% 55% / 0.03) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 80%,
+        hsl(340 30% 94% / 0.4) 0%,
+        transparent 50%
+      );
     --page-dots: radial-gradient(hsl(346 55% 55% / 0.06) 1px, transparent 1px);
   }
 
@@ -104,7 +121,7 @@
   h2,
   h3,
   h4 {
-    font-family: "Inter Tight", sans-serif;
+    font-family: "Playfair Display", serif;
   }
 }
 
@@ -138,19 +155,30 @@
   }
 
   .btn-gradient {
-    background: linear-gradient(180deg, hsl(var(--primary-light)) 0%, hsl(var(--primary)) 40%, hsl(var(--primary-dark)) 100%);
-    box-shadow: 0 4px 14px 0 hsl(var(--primary) / 0.3), inset 0 1px 0 0 hsl(0 0% 100% / 0.3);
+    background: linear-gradient(
+      180deg,
+      hsl(var(--primary-light)) 0%,
+      hsl(var(--primary)) 40%,
+      hsl(var(--primary-dark)) 100%
+    );
+    box-shadow:
+      0 4px 14px 0 hsl(var(--primary) / 0.3),
+      inset 0 1px 0 0 hsl(0 0% 100% / 0.3);
     border-top: 1px solid hsl(0 0% 100% / 0.25);
     transition: all 0.2s ease;
   }
 
   .btn-gradient:hover {
-    box-shadow: 0 6px 20px 0 hsl(var(--primary) / 0.4), inset 0 1px 0 0 hsl(0 0% 100% / 0.4);
+    box-shadow:
+      0 6px 20px 0 hsl(var(--primary) / 0.4),
+      inset 0 1px 0 0 hsl(0 0% 100% / 0.4);
     transform: translateY(-1px);
   }
 
   .btn-gradient:active {
-    box-shadow: 0 2px 8px 0 hsl(var(--primary) / 0.25), inset 0 2px 4px hsl(var(--primary-dark) / 0.3);
+    box-shadow:
+      0 2px 8px 0 hsl(var(--primary) / 0.25),
+      inset 0 2px 4px hsl(var(--primary-dark) / 0.3);
     transform: translateY(0);
     border-top-color: transparent;
   }

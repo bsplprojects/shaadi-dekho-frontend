@@ -410,11 +410,17 @@ const Profile = () => {
                 <div className="mb-3">
                   <p className="text-xs text-muted-foreground mb-2">Hobbies</p>
                   <div className="flex flex-wrap gap-2">
-                    {h?.map((h) => (
-                      <Badge key={h} variant="secondary" className="text-xs">
-                        {h}
+                    {h?.length > 0 ? (
+                      h?.map((h) => (
+                        <Badge key={h} variant="secondary" className="text-xs">
+                          {h}
+                        </Badge>
+                      ))
+                    ) : (
+                      <Badge variant="secondary" className="text-xs">
+                        Not mentioned
                       </Badge>
-                    ))}
+                    )}
                   </div>
                 </div>
                 <div>
@@ -422,11 +428,17 @@ const Profile = () => {
                     Interests
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {i?.map((i) => (
-                      <Badge key={i} variant="outline" className="text-xs">
-                        {i}
+                    {i?.length > 0 ? (
+                      i?.map((i) => (
+                        <Badge key={i} variant="outline" className="text-xs">
+                          {i}
+                        </Badge>
+                      ))
+                    ) : (
+                      <Badge variant="secondary" className="text-xs">
+                        Not mentioned
                       </Badge>
-                    ))}
+                    )}
                   </div>
                 </div>
               </CardContent>

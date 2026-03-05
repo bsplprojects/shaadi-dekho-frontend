@@ -18,6 +18,7 @@ import { useLogin, useRegister } from "@/features/auth/hook";
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const mode = searchParams.get("mode") || "login";
   const [isLogin, setIsLogin] = useState(mode === "login");
   const login = useLogin();
@@ -101,47 +102,47 @@ const Auth = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="Enter phone number"
-                  className="h-11"
-                  {...register("phone", {
-                    pattern: {
-                      value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
-                      message: "Invalid phone number",
-                    },
-                  })}
-                />
-              </div>
+              {!isLogin && (
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <Input
+                    id="phone"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="Enter phone number"
+                    className="h-11"
+                    {...register("phone", {
+                      pattern: {
+                        value: /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/,
+                        message: "Invalid phone number",
+                      },
+                    })}
+                  />
+                </div>
+              )}
 
-              {formState.errors.phone && (
+              {!isLogin && formState.errors.phone && (
                 <small className="text-red-500">
                   {formState.errors.phone.message}
                 </small>
               )}
 
-              <div className="flex items-center gap-3">
-                <span className="h-0.5 w-full bg-muted" />
-                <p className="text-muted-foreground text-sm">OR</p>
-                <span className="h-0.5 w-full bg-muted" />
-              </div>
-
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">Email {isLogin ? "/ Mobile" : ""}</Label>
                 <Input
                   id="email"
-                  type="email"
-                  placeholder="you@example.com"
+                  type={isLogin ? "text" : "email"}
+                  placeholder={
+                    isLogin ? `Enter email or mobile number` : "Enter email"
+                  }
                   className="h-11"
-                  {...register("email", {
+                  {...register(isLogin ? "credential" : "email", {
                     pattern: {
                       value:
-                        /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/,
-                      message: "Invalid email address",
+                        /^((?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}|^[6-9]\d{9})$/,
+                      message: isLogin
+                        ? "Invalid email or mobile number"
+                        : "Invalid email address",
                     },
                   })}
                 />
@@ -190,6 +191,15 @@ const Auth = () => {
                       : "Create Account"}
               </Button>
             </form>
+
+            {/* LOGIN VIA OTP */}
+            <Button
+              onClick={() => navigate("/login-otp")}
+              variant="secondary"
+              className="w-full mt-3 font-semibold text-primary"
+            >
+              Sign In via OTP
+            </Button>
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
               {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}

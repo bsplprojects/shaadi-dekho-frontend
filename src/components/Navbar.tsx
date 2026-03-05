@@ -10,13 +10,13 @@ import {
   Search,
   MessageSquare,
   Sparkles,
-  UserPen,
   SlidersHorizontal,
   Star,
   Settings,
   User,
   Phone,
   LogOut,
+  CircleUserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -29,11 +29,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { useLogout } from "@/features/auth/hook";
+import logo from "../assets/logo.png";
 
 const navLinks = [
-  { label: "Home", path: "/", icon: Home },
+  { label: "Home", path: "/", icon: Home, isAuth: true },
   // { label: "Pricing", path: "#pricing", icon: IndianRupee },
-  { label: "Contact Us", path: "/contact", icon: Phone },
+  { label: "Contact Us", path: "/contact", icon: Phone, isAuth: true },
   { label: "Matches", path: "/matches", icon: Users, isAuth: true },
   { label: "Search", path: "/search", icon: Search, isAuth: true },
   { label: "Interests", path: "/interests", icon: Sparkles, isAuth: true },
@@ -52,10 +53,7 @@ const Navbar = () => {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <Heart className="h-7 w-7 text-primary fill-primary" />
-          <span className="text-xl font-display font-bold text-foreground">
-            Shaadi<span className="text-primary">Dekho</span>
-          </span>
+          <img src={logo} alt="logo" width={170} />
         </Link>
 
         {/* Desktop Nav */}
@@ -102,7 +100,7 @@ const Navbar = () => {
                   >
                     <Avatar className="h-9 w-9 border-2 border-primary/20">
                       <AvatarFallback className="bg-accent text-accent-foreground font-semibold text-sm">
-                        {user?.name?.charAt(0) || "U"}
+                        <CircleUserRound />
                       </AvatarFallback>
                     </Avatar>
                   </Button>

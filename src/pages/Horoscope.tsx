@@ -40,7 +40,6 @@ const Horoscope = () => {
 
   const handleSave = (data: HoroscopePayload) => {
     mutation.mutate(data);
-    // console.log(data);
   };
 
   return (

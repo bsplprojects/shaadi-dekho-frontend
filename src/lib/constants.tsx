@@ -1,5 +1,23 @@
 import { profilePayload } from "@/features/profile/types";
-import { Clock, Eye, MapPin, Star, UserCheck, Users } from "lucide-react";
+import {
+  Clock,
+  Eye,
+  Heart,
+  MapPin,
+  MessageCircle,
+  Search,
+  Shield,
+  Star,
+  UserCheck,
+  Users,
+} from "lucide-react";
+
+import couple1 from "../assets/couple1.png";
+import couple2 from "../assets/couple2.png";
+import couple3 from "../assets/couple3.png";
+import couple4 from "../assets/couple4.png";
+import couple5 from "../assets/couple5.png";
+import couple6 from "../assets/couple6.png";
 
 export const steps = [
   "Basic Details",
@@ -342,4 +360,110 @@ export const interests = [
   "Startups",
   "Education",
   "History",
+];
+
+export const features = [
+  {
+    icon: Shield,
+    title: "Verified Profiles",
+    desc: "100% verified profiles with ID and photo verification for safety.",
+  },
+  {
+    icon: Search,
+    title: "Smart Matchmaking",
+    desc: "AI-powered matching based on preferences, horoscope & lifestyle.",
+  },
+  {
+    icon: Users,
+    title: "Large Community",
+    desc: "Millions of active profiles across all communities and regions.",
+  },
+  {
+    icon: Star,
+    title: "Premium Experience",
+    desc: "Dedicated relationship managers and priority customer support.",
+  },
+  {
+    icon: MessageCircle,
+    title: "Secure Messaging",
+    desc: "End-to-end encrypted chat to connect with your matches privately.",
+  },
+  {
+    icon: Heart,
+    title: "Success Stories",
+    desc: "Thousands of happy couples found their soulmate through us.",
+  },
+];
+
+export const stats = [
+  { value: "5M+", label: "Registered Users" },
+  { value: "1.2M+", label: "Happy Marriages" },
+  { value: "50+", label: "Communities" },
+  { value: "99%", label: "Profile Verification" },
+];
+
+export const successStories = [
+  {
+    names: "Rahul & Priya",
+    date: "March 15, 2025",
+    location: "Mumbai",
+    img: couple1,
+  },
+  {
+    names: "Harkirat & Sneha",
+    date: "January 8, 2025",
+    location: "Delhi",
+    img: couple2,
+  },
+  {
+    names: "Arjun & Kavya",
+    date: "November 22, 2024",
+    location: "Bangalore",
+    img: couple3,
+  },
+  {
+    names: "Amit & Neha",
+    date: "September 5, 2024",
+    location: "Pune",
+    img: couple4,
+  },
+  {
+    names: "Sanjay & Divya",
+    date: "July 12, 2024",
+    location: "Chennai",
+    img: couple5,
+  },
+  {
+    names: "Kunal & Ritu",
+    date: "May 30, 2024",
+    location: "Hyderabad",
+    img: couple6,
+  },
+];
+
+export const faqs = [
+  {
+    q: "How does ShaadiDekho verify profiles?",
+    a: "Every profile goes through a multi-step verification process including ID verification, phone number verification, and photo screening. Our team manually reviews flagged profiles to ensure authenticity and safety for all members.",
+  },
+  {
+    q: "Is it free to create a profile?",
+    a: "Yes! Creating a profile on ShaadiDekho is completely free. You can browse profiles, set preferences, and receive match recommendations at no cost. Premium plans unlock additional features like direct messaging and advanced filters.",
+  },
+  {
+    q: "How does the matchmaking algorithm work?",
+    a: "Our AI-powered algorithm considers over 30 parameters including community preferences, education, lifestyle, location, and horoscope compatibility. The more complete your profile, the better your matches will be.",
+  },
+  {
+    q: "Can I hide my profile temporarily?",
+    a: "Absolutely. You can deactivate your profile anytime from Settings. Your data stays safe, and you can reactivate whenever you're ready to resume your search.",
+  },
+  {
+    q: "What is the Assisted Service?",
+    a: "Our Assisted Service pairs you with a dedicated Relationship Manager who hand-picks matches, coordinates communication, and guides you through the entire process — saving you time and effort.",
+  },
+  {
+    q: "How do I upgrade to a premium plan?",
+    a: "Navigate to the pricing section or your account settings and choose from our Gold or Diamond plans. Payment is secure and you can cancel or change plans anytime.",
+  },
 ];

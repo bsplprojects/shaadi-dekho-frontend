@@ -1,5 +1,5 @@
 import { api } from "../../lib/axios";
-import { authPayload } from "./types";
+import { authPayload, otpPayload } from "./types";
 
 export const register = async (data: authPayload) => {
   const res = await api.post("/auth/register", data);
@@ -18,5 +18,10 @@ export const logout = async () => {
 
 export const me = async () => {
   const res = await api.get("/auth/me");
+  return res.data;
+};
+
+export const verifyOtp = async (data: otpPayload) => {
+  const res = await api.post("/auth/otp", data);
   return res.data;
 };

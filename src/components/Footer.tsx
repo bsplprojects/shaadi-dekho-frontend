@@ -1,5 +1,6 @@
 import { Heart, Phone, Mail, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 const Footer = () => (
   <footer className="border-t border-border bg-card mt-auto">
@@ -8,13 +9,12 @@ const Footer = () => (
         {/* Brand */}
         <div className="lg:col-span-2">
           <Link to="/" className="flex items-center gap-2 mb-3">
-            <Heart className="h-6 w-6 text-primary fill-primary" />
-            <span className="text-lg font-display font-bold">
-              Shaadi<span className="text-primary">Dekho</span>
-            </span>
+            <img src={logo} alt="logo" width={170} />
           </Link>
           <p className="text-sm text-muted-foreground mb-4">
-            India's most trusted matrimonial service. We combine traditional values with modern technology to help millions find their perfect life partner.
+            India's most trusted matrimonial service. We combine traditional
+            values with modern technology to help millions find their perfect
+            life partner.
           </p>
           <div className="space-y-2 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
@@ -36,12 +36,39 @@ const Footer = () => (
         <div>
           <h4 className="font-semibold text-sm mb-3 font-sans">Quick Links</h4>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-            <Link to="/search" className="hover:text-primary transition-colors">Search Profiles</Link>
-            <Link to="/matches" className="hover:text-primary transition-colors">My Matches</Link>
-            <Link to="/interests" className="hover:text-primary transition-colors">Interests</Link>
-            <Link to="/messages" className="hover:text-primary transition-colors">Messages</Link>
-            <Link to="/my-profile" className="hover:text-primary transition-colors">My Profile</Link>
-            <Link to="/edit-profile" className="hover:text-primary transition-colors">Edit Profile</Link>
+            <Link to="/search" className="hover:text-primary transition-colors">
+              Search Profiles
+            </Link>
+            <Link
+              to="/matches"
+              className="hover:text-primary transition-colors"
+            >
+              My Matches
+            </Link>
+            <Link
+              to="/interests"
+              className="hover:text-primary transition-colors"
+            >
+              Interests
+            </Link>
+            <Link
+              to="/messages"
+              className="hover:text-primary transition-colors"
+            >
+              Messages
+            </Link>
+            <Link
+              to="/my-profile"
+              className="hover:text-primary transition-colors"
+            >
+              My Profile
+            </Link>
+            <Link
+              to="/edit-profile"
+              className="hover:text-primary transition-colors"
+            >
+              Edit Profile
+            </Link>
           </div>
         </div>
 
@@ -49,11 +76,30 @@ const Footer = () => (
         <div>
           <h4 className="font-semibold text-sm mb-3 font-sans">Support</h4>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-            <Link to="/help" className="hover:text-primary transition-colors">Help Center</Link>
-            <Link to="/safety" className="hover:text-primary transition-colors">Safety Tips</Link>
-            <Link to="/contact" className="hover:text-primary transition-colors">Contact Us</Link>
-            <Link to="/settings" className="hover:text-primary transition-colors">Settings</Link>
-            <Link to="/notifications" className="hover:text-primary transition-colors">Notifications</Link>
+            <Link to="/help" className="hover:text-primary transition-colors">
+              Help Center
+            </Link>
+            <Link to="/safety" className="hover:text-primary transition-colors">
+              Safety Tips
+            </Link>
+            <Link
+              to="/contact"
+              className="hover:text-primary transition-colors"
+            >
+              Contact Us
+            </Link>
+            <Link
+              to="/settings"
+              className="hover:text-primary transition-colors"
+            >
+              Settings
+            </Link>
+            <Link
+              to="/notifications"
+              className="hover:text-primary transition-colors"
+            >
+              Notifications
+            </Link>
           </div>
         </div>
 
@@ -61,13 +107,30 @@ const Footer = () => (
         <div>
           <h4 className="font-semibold text-sm mb-3 font-sans">Legal</h4>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-            <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
+            <Link
+              to="/privacy"
+              className="hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:text-primary transition-colors">
+              Terms of Service
+            </Link>
           </div>
           <h4 className="font-semibold text-sm mb-3 mt-6 font-sans">Explore</h4>
           <div className="flex flex-col gap-2 text-sm text-muted-foreground">
-            <Link to="/horoscope" className="hover:text-primary transition-colors">Horoscope</Link>
-            <Link to="/preferences" className="hover:text-primary transition-colors">Partner Preferences</Link>
+            <Link
+              to="/horoscope"
+              className="hover:text-primary transition-colors"
+            >
+              Horoscope
+            </Link>
+            <Link
+              to="/preferences"
+              className="hover:text-primary transition-colors"
+            >
+              Partner Preferences
+            </Link>
           </div>
         </div>
       </div>
@@ -75,9 +138,15 @@ const Footer = () => (
       <div className="border-t border-border mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
         <span>© 2026 ShaadiDekho. All rights reserved.</span>
         <div className="flex gap-4">
-          <Link to="/privacy" className="hover:text-primary transition-colors">Privacy</Link>
-          <Link to="/terms" className="hover:text-primary transition-colors">Terms</Link>
-          <Link to="/contact" className="hover:text-primary transition-colors">Contact</Link>
+          <Link to="/privacy" className="hover:text-primary transition-colors">
+            Privacy
+          </Link>
+          <Link to="/terms" className="hover:text-primary transition-colors">
+            Terms
+          </Link>
+          <Link to="/contact" className="hover:text-primary transition-colors">
+            Contact
+          </Link>
         </div>
       </div>
     </div>

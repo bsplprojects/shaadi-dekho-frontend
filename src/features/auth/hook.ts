@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { login, logout, me, register } from "./api";
+import { login, logout, me, register, verifyOtp } from "./api";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -74,6 +74,34 @@ export const useLogout = () => {
       toast({
         title: error.response.data.message,
         description: "Please try again later",
+      });
+    },
+  });
+};
+
+export const useOtp = () => {
+  const client = useQueryClient();
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: verifyOtp,
+    onSuccess: (data) => {
+      client.invalidateQueries({ queryKey: ["me"] });
+      toast({
+        title: data.message,
+        description: "Welcome to Shaadi Dekho!",
+      });
+      if (data?.data?.onBoarded) {
+        navigate("/matches");
+      } else {
+        navigate("/onboarding");
+      }
+    },
+    onError: (error: any) => {
+      toast({
+        title: error.response.data.message,
+        description: error.response.data.message
+          ? "Try again later"
+          : "Too many requests. Please try again after 15 minutes",
       });
     },
   });

@@ -28,6 +28,7 @@ import VerifyEmail from "./pages/VerifyEmail";
 import Profile from "./pages/Profile";
 import MyProfile from "./pages/MyProfile";
 import NotFound from "./pages/NotFound";
+import LoginViaOTP from "./components/LoginViaOTP";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -69,6 +70,7 @@ const App = () => (
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path="/my-profile" element={<MyProfile />} />
                 <Route path="/profile/:id" element={<Profile />} />
+                <Route path="/login-otp" element={<LoginViaOTP />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
