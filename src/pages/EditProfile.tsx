@@ -208,7 +208,7 @@ const EditProfile = () => {
     formData.append("interests", JSON.stringify(payload.interests));
 
     edit.mutate(
-      { id: data?._id, data: formData },
+      { id: (data as any)?._id, data: formData },
       {
         onSuccess: () => {
           navigate("/my-profile");
