@@ -13,7 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 
 const Settings = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { setUser } = useAuth();
+  const handleLogout = () => { setUser(null); navigate("/"); };
   const { toast } = useToast();
 
   const [emailNotif, setEmailNotif] = useState(true);
@@ -127,7 +128,7 @@ const Settings = () => {
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground">Permanently delete your account and all associated data. This action cannot be undone.</p>
               <div className="flex gap-3">
-                <Button variant="outline" onClick={() => { logout(); navigate("/"); }}>Deactivate Account</Button>
+                <Button variant="outline" onClick={handleLogout}>Deactivate Account</Button>
                 <Button variant="destructive">Delete Account</Button>
               </div>
             </CardContent>

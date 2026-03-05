@@ -25,7 +25,7 @@ export const useRegister = () => {
           ? "We have sent you an email to verify your account. Please check your inbox."
           : "Welcome to Shaadi Dekho!",
       });
-      client.invalidateQueries(["me"]);
+      client.invalidateQueries({ queryKey: ["me"] });
       navigate("/onboarding");
     },
     onError: (error: any) => {
@@ -43,7 +43,7 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      client.invalidateQueries(["me"]);
+      client.invalidateQueries({ queryKey: ["me"] });
       if (data?.data?.onBoarded) {
         navigate("/matches");
       } else {
@@ -67,7 +67,7 @@ export const useLogout = () => {
     mutationFn: logout,
     onSuccess: () => {
       setUser(null);
-      client.invalidateQueries(["me"]);
+      client.invalidateQueries({ queryKey: ["me"] });
       navigate("/auth?mode=login");
     },
     onError: (error: any) => {
