@@ -15,6 +15,10 @@ import {
   Clock,
   ChevronLeft,
   ChevronRight,
+  Crown,
+  Gem,
+  HandHeart,
+  BadgeCheck,
 } from "lucide-react";
 import {
   Accordion,
@@ -24,6 +28,7 @@ import {
 } from "@/components/ui/accordion";
 import heroImage from "@/assets/hero-couple.jpg";
 import managerImage from "@/assets/relationship-manager.jpg";
+import selectLogo from "@/assets/select-logo.png";
 import { useState } from "react";
 
 const features = [
@@ -292,6 +297,82 @@ const Index = () => {
                 <li className="flex gap-2"><Heart className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Horoscope matching</li>
               </ul>
               <Button variant="outline" className="w-full" onClick={() => navigate("/matches")}>Go Diamond</Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ShaadiDekho Select — Premium Service */}
+      <section className="py-20 bg-gradient-to-br from-accent/40 via-card to-accent/20 overflow-hidden">
+        <div className="container max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <img src={selectLogo} alt="ShaadiDekho Select" className="h-16 w-16 object-contain" />
+                <div>
+                  <h3 className="text-xl font-display font-bold">ShaadiDekho <span className="text-primary">Select</span></h3>
+                  <p className="text-xs text-muted-foreground">Exclusive premium matchmaking</p>
+                </div>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
+                Experience <span className="text-primary">world-class</span> matchmaking
+              </h2>
+              <p className="text-muted-foreground mb-8 text-base leading-relaxed">
+                A white-glove service designed for discerning individuals. Our elite team of matchmakers curates highly compatible profiles, conducts background verification, and arranges introductions — so you can focus on finding love.
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                {[
+                  { icon: Crown, title: "VIP Treatment", desc: "Dedicated advisor for your journey" },
+                  { icon: HandHeart, title: "Hand-picked Matches", desc: "Curated profiles that truly fit" },
+                  { icon: BadgeCheck, title: "Verified Elites", desc: "Thorough background checks" },
+                  { icon: Gem, title: "Priority Listing", desc: "Be seen by premium members first" },
+                ].map((item) => (
+                  <div key={item.title} className="flex items-start gap-3 bg-card/80 border border-border rounded-xl p-4">
+                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                      <item.icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">{item.title}</p>
+                      <p className="text-xs text-muted-foreground">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <Button size="lg" onClick={() => navigate("/matches")}>
+                Explore Select →
+              </Button>
+            </div>
+
+            <div className="relative flex justify-center">
+              <div className="absolute -inset-6 rounded-3xl bg-primary/5 blur-3xl" />
+              <div className="relative bg-card border border-border rounded-2xl p-8 shadow-xl max-w-sm w-full">
+                <div className="text-center mb-6">
+                  <img src={selectLogo} alt="Select" className="h-20 w-20 mx-auto mb-4 object-contain" />
+                  <h4 className="font-display font-bold text-lg">Why Go Select?</h4>
+                </div>
+                <ul className="space-y-4">
+                  {[
+                    "Personal relationship manager assigned to you",
+                    "Up to 15 hand-picked matches every month",
+                    "Professional photoshoot for your profile",
+                    "Background & family verification included",
+                    "Dedicated WhatsApp support line",
+                  ].map((text, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm">
+                      <span className="h-5 w-5 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 text-xs font-bold mt-0.5">
+                        {i + 1}
+                      </span>
+                      <span className="text-muted-foreground">{text}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-6 pt-4 border-t border-border text-center">
+                  <p className="text-xs text-muted-foreground mb-1">Starting at</p>
+                  <p className="text-2xl font-display font-bold text-primary">₹9,999<span className="text-sm font-normal text-muted-foreground">/mo</span></p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
