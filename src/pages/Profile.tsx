@@ -31,6 +31,7 @@ import { Suspense } from "react";
 import MyProfileHeroCard from "@/components/Skeleton/MyProfileHeroCard";
 import MyProfileBasic from "@/components/Skeleton/MyProfileBasic";
 import { HobbiesInterestsSkeleton } from "@/components/Skeleton/HobbiesInterests";
+import { useInterest } from "@/features/interest/hook";
 
 const formatIncome = (income: string) => {
   const num = parseInt(income);
@@ -77,6 +78,7 @@ const Profile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data } = useGetProfile(id);
+  const addInterest = useInterest();
 
   if (!data?.data) {
     return (
@@ -109,6 +111,10 @@ const Profile = () => {
   const hsc = data?.data?.horoscope;
   const h = data?.data?.hobbies;
   const i = data?.data?.interests;
+
+  const saveInterest = () => {
+    addInterest.mutate(id);
+  };
 
   return (
     <div className="min-h-[calc(100vh-4rem)] py-8 page-pattern page-dots">
@@ -159,7 +165,11 @@ const Profile = () => {
                   <Button size="sm" variant="outline">
                     <X className="h-4 w-4 mr-1" /> Decline
                   </Button>
-                  <Button size="sm" className="btn-gradient">
+                  <Button
+                    onClick={saveInterest}
+                    size="sm"
+                    className="btn-gradient"
+                  >
                     <Heart className="h-4 w-4 mr-1" /> Interested
                   </Button>
                 </div>

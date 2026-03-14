@@ -1,12 +1,19 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Briefcase, GraduationCap, Heart, MapPin, X } from "lucide-react";
 import { Button } from "../ui/button";
+import { useGetProfile } from "@/features/profile/hook";
+import { useInterest } from "@/features/interest/hook";
 
 const ProfileList = ({ profile }) => {
   const navigate = useNavigate();
+  const addInterest = useInterest();
+  const SaveInterest = (e: React.FormEvent, id) => {
+    e.preventDefault();
+    addInterest.mutate(id);
+  };
 
   const formatOptions = (val: string) => {
     return val?.replace(/_/g, " ")?.replace(/\b\w/g, (c) => c.toUpperCase());
@@ -65,7 +72,7 @@ const ProfileList = ({ profile }) => {
             Decline
           </Button>
           <Button
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => SaveInterest(e, profile?._id)}
             size="sm"
             className="flex-1"
           >

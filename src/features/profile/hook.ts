@@ -8,6 +8,7 @@ import {
   checkStatus,
   myProfile,
   addHoroscope,
+  getFilteredProfiles,
 } from "./api";
 import { toast } from "@/hooks/use-toast";
 
@@ -85,5 +86,11 @@ export const useAddHoroscope = () => {
         description: "",
       });
     },
+  });
+};
+
+export const useFilterProfile = () => {
+  return useMutation({
+    mutationFn: getFilteredProfiles,
   });
 };

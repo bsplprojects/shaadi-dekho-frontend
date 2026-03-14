@@ -4,46 +4,48 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const sent = [
-  { id: 1, name: "Ananya Sharma", age: 26, city: "Mumbai", status: "pending", initials: "AS" },
-  { id: 2, name: "Riya Patel", age: 24, city: "Ahmedabad", status: "accepted", initials: "RP" },
-];
-
-const received = [
-  { id: 3, name: "Rohit Verma", age: 28, city: "Delhi", status: "pending", initials: "RV" },
-  { id: 4, name: "Amit Kumar", age: 30, city: "Bangalore", status: "pending", initials: "AK" },
-];
+import { useGetAllInterest } from "@/features/interest/hook";
 
 const sidebarSections = [
   {
     title: "Interests Received",
-    filters: ["All", "Pending", "Accepted/Replied", "Declined"],
+    filters: ["All", "Accepted", "Declined"],
   },
   {
     title: "Interests Sent",
-    filters: ["All", "Pending", "Accepted/Replied", "Declined"],
+    filters: ["All",  "Accepted", "Declined"],
   },
 ];
 
 const statusBadge = (status: string) => {
-  if (status === "accepted") return <Badge variant="secondary" className="border-0">Accepted</Badge>;
-  if (status === "declined") return <Badge variant="destructive">Declined</Badge>;
+  if (status === "accepted")
+    return (
+      <Badge variant="secondary" className="border-0">
+        Accepted
+      </Badge>
+    );
+  if (status === "declined")
+    return <Badge variant="destructive">Declined</Badge>;
   return <Badge variant="secondary">Pending</Badge>;
 };
-
 type Section = "received" | "sent";
-
 const Interests = () => {
-  const [activeSection, setActiveSection] = useState<Section>("received");
+  const [activeSection, setActiveSection] = useState<Section>();
   const [activeFilter, setActiveFilter] = useState("All");
+  const { data } = useGetAllInterest();
 
+  const interests = data?.data || [];
+
+  const sent = interests.filter((i: any) => i.type === "sent");
+
+  const received = interests.filter((i: any) => i.type === "received");
+  
   const currentData = activeSection === "received" ? received : sent;
 
   const filteredData = currentData.filter((p) => {
     if (activeFilter === "All") return true;
     if (activeFilter === "Pending") return p.status === "pending";
-    if (activeFilter === "Accepted/Replied") return p.status === "accepted";
+    if (activeFilter === "Accepted") return p.status === "accepted";
     if (activeFilter === "Declined") return p.status === "declined";
     return true;
   });
@@ -52,7 +54,7 @@ const Interests = () => {
     setActiveSection(sectionIdx === 0 ? "received" : "sent");
     setActiveFilter(filter);
   };
-
+  
   return (
     <div className="min-h-[calc(100vh-4rem)] py-8">
       <div className="container max-w-5xl">
@@ -64,12 +66,14 @@ const Interests = () => {
               <CardContent className="p-4 space-y-4">
                 {sidebarSections.map((section, sIdx) => (
                   <div key={section.title}>
-                    <h3 className="font-semibold text-sm mb-2">{section.title}</h3>
+                    <h3 className="font-semibold text-sm mb-2">
+                      {section.title}
+                    </h3>
                     <ul className="space-y-1">
                       {section.filters.map((f) => {
                         const isActive =
-                          (sIdx === 0 ? "received" : "sent") === activeSection &&
-                          activeFilter === f;
+                          (sIdx === 0 ? "received" : "sent") ===
+                            activeSection && activeFilter === f;
                         return (
                           <li key={`${sIdx}-${f}`}>
                             <button
@@ -78,7 +82,7 @@ const Interests = () => {
                                 "w-full text-left text-sm px-3 py-1.5 rounded-md transition-colors",
                                 isActive
                                   ? "text-primary font-semibold bg-primary/5"
-                                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                                  : "text-muted-foreground hover:text-foreground hover:bg-accent",
                               )}
                             >
                               {f}
@@ -100,7 +104,9 @@ const Interests = () => {
           <div className="lg:col-span-3 space-y-3">
             <div className="mb-2">
               <h2 className="text-xl font-semibold">
-                {activeSection === "received" ? "All interests received" : "All interests sent"}
+                {activeSection === "received"
+                  ? "All interests received"
+                  : "All interests sent"}
               </h2>
               <p className="text-sm text-muted-foreground">
                 {activeSection === "received"
@@ -108,28 +114,30 @@ const Interests = () => {
                   : "Interests you have sent to members"}
               </p>
             </div>
-
             {filteredData.length === 0 ? (
               <div className="text-center py-16 text-muted-foreground">
                 <p className="font-semibold mb-1">No interests found</p>
-                <p className="text-sm">All incoming interests and responses will be shown here</p>
               </div>
             ) : (
               filteredData.map((p) => (
-                <Card key={p.id}>
+                <Card key={p._id}>
                   <CardContent className="p-4 flex items-center gap-4">
                     <div className="h-12 w-12 rounded-full bg-accent flex items-center justify-center font-display font-bold text-primary">
                       {p.initials}
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold">{p.name}, {p.age}</h3>
-                      <p className="text-sm text-muted-foreground">{p.city}</p>
+                      <h3 className="font-semibold">{p.name}</h3>
+                      <p>Age: {p.age}</p>
                     </div>
                     {statusBadge(p.status)}
                     {p.status === "pending" && activeSection === "received" && (
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline"><X className="h-4 w-4" /></Button>
-                        <Button size="sm"><Check className="h-4 w-4" /></Button>
+                        <Button size="sm" variant="outline">
+                          <X className="h-4 w-4" />
+                        </Button>
+                        <Button size="sm">
+                          <Check className="h-4 w-4" />
+                        </Button>
                       </div>
                     )}
                   </CardContent>

@@ -23,6 +23,7 @@ import {
 import { useState } from "react";
 import profileSuccessImg from "@/assets/profile-success.png";
 import ProfileCompletion from "@/components/Profile/ProfileCompletion";
+import SetPreference from "@/components/Profile/SetPreference";
 
 const Preferences = () => {
   const navigate = useNavigate();
@@ -64,8 +65,8 @@ const Preferences = () => {
           Set your preferences to find the best matches
         </p>
 
-        <div className="space-y-6">
-          {/* Basic Preferences */}
+        {/* <div className="space-y-6">
+          
           <Card>
             <CardHeader>
               <CardTitle className="text-lg font-sans">
@@ -151,7 +152,7 @@ const Preferences = () => {
             </CardContent>
           </Card>
 
-          {/* Religion & Community */}
+    
           <Card>
             <CardHeader>
               <CardTitle className="text-lg font-sans">
@@ -215,7 +216,7 @@ const Preferences = () => {
             </CardContent>
           </Card>
 
-          {/* Education & Career */}
+    
           <Card>
             <CardHeader>
               <CardTitle className="text-lg font-sans">
@@ -272,7 +273,6 @@ const Preferences = () => {
             </CardContent>
           </Card>
 
-          {/* Location & Lifestyle */}
           <Card>
             <CardHeader>
               <CardTitle className="text-lg font-sans">
@@ -310,7 +310,9 @@ const Preferences = () => {
               Save Preferences
             </Button>
           </div>
-        </div>
+        </div> */}
+
+        <SetPreference/>
       </div>
     </div>
   );

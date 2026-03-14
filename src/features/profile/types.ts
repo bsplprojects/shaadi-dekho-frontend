@@ -77,3 +77,25 @@ export interface HoroscopePayload {
   notes: string;
   manglik: string;
 }
+
+export interface PreferencePayload {
+  ageRange:{
+    min:number,
+    max:number,
+  };
+  heightRange:{
+    min:string,
+    max:string,
+  };
+  maritalStatus:string;
+  bodyType:string;
+  religion:string;
+  caste:string;
+  motherTongue:string;
+  minimumEducation:string;
+  preferOccupation:string;
+  minimumAnnualIncome:string;
+  preferedLocation:string;
+  diet:string;
+  smoking:string
+}

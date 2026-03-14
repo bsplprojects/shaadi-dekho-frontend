@@ -46,3 +46,8 @@ export const addHoroscope = async (data: HoroscopePayload) => {
   const res = await api.post(`/profile/horoscope`, data);
   return res.data;
 };
+
+export const getFilteredProfiles = async (filters) => {
+  const res = await api.post(`/profile/filterProfile`, filters);
+  return res.data;
+};
