@@ -24,7 +24,7 @@ import { ProfileCardSkeletons } from "@/components/Skeleton/ProfileCardsSkeleton
 
 const SearchPage = () => {
   const [filters, setFilters] = useState({
-    memberID:"",
+    memberID: "",
     minAge: "",
     maxAge: "",
     religion: "",

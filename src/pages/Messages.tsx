@@ -17,14 +17,12 @@ import { api } from "@/lib/axios";
 const socket = io("http://localhost:5000");
 
 const Messages = () => {
-  const [input, setInput] = useState("");
   const [chatProfiles, setChatProfiles] = useState<any[]>([]);
   const [selectedProfile, setSelectedProfile] = useState<any>(null);
 
   const user = useAuth();
   const { data: myProfile } = useMyProfile();
   const { data: interestData } = useGetAllInterest();
-
 
   useEffect(() => {
     if (!interestData || !user?.user?._id) return;
@@ -53,40 +51,59 @@ const Messages = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
-  // If a profile is selected, its `user` field is the receiverId
   const receiverId = selectedProfile?.user;
 
-  // Register user + receive messages
   useEffect(() => {
-    socket.emit("register", user?.user?._id);
+    if (!user?.user?._id) return;
 
-    socket.on("receive_message", (msg) => {
-      setMessages((prev) => [...prev, msg]);
-    });
+    socket.emit("register", user.user._id);
+
+    const handleMessage = (msg) => {
+      if (msg.senderId !== receiverId && msg.receiverId !== receiverId) {
+        return;
+      }
+
+      const formatted = {
+        from: msg.senderId === user.user._id ? "me" : "other",
+        message: msg.text,
+        time: new Date(msg.createdAt || Date.now()).toLocaleTimeString(),
+      };
+
+      setMessages((prev) => [...prev, formatted]);
+    };
+
+    socket.on("receive_message", handleMessage);
 
     return () => {
-      socket.off("receive_message");
+      socket.off("receive_message", handleMessage);
     };
-  }, []);
+  }, [receiverId, user?.user?._id]);
 
   // Fetch old messages
   useEffect(() => {
+    if (!receiverId) return;
+
     const fetchMessages = async () => {
       try {
-        const res = await api.get(
-          `/api/v1/messages/${user?.user?._id}/${receiverId}`);
-      
-        setMessages(res.data);
+        const res = await api.get(`/messages/${user?.user?._id}/${receiverId}`);
+
+        const formatted = res.data.map((msg) => ({
+          from: msg.senderId === user?.user?._id ? "me" : "other",
+          message: msg.text,
+          time: new Date(msg.createdAt).toLocaleTimeString(),
+        }));
+
+        setMessages(formatted);
       } catch (err) {
         console.error(err);
       }
     };
 
     fetchMessages();
-  }, []);
+  }, [receiverId]);
 
   const sendMessage = () => {
-    if (!message.trim()) return;
+    if (!message.trim() || !receiverId) return;
 
     socket.emit("send_message", {
       senderId: user?.user?._id,
@@ -141,7 +158,7 @@ const Messages = () => {
           </Card>
 
           {/* Chat area */}
-          <Card className="md:col-span-2 flex flex-col">
+          <Card className="md:col-span-2 flex flex-col h-full overflow-hidden">
             {/* Header */}
             <div className="p-4 border-b border-border flex items-center gap-3">
               {selectedProfile ? (
@@ -159,7 +176,7 @@ const Messages = () => {
                 </span>
               )}
             </div>
-            <CardContent className="flex-1 overflow-auto p-4 space-y-3">
+            <CardContent className="flex-1 overflow-y-auto p-4 space-y-3">
               {messages.map((m, index) => (
                 <div
                   key={index}
@@ -178,11 +195,11 @@ const Messages = () => {
                 </div>
               ))}
             </CardContent>
-            <div className="p-4 border-t border-border flex gap-2">
+            <div className="p-4 border-t border-border flex gap-2 shrink-0">
               <Input
                 placeholder="Type a message..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 className="flex-1"
               />
               <Button size="icon" onClick={sendMessage}>
