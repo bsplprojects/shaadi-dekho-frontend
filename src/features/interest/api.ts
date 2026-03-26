@@ -8,3 +8,14 @@ export async function getAllInterest() {
   const res = await api.get("/interest/getAllInterest");
   return res.data;
 }
+
+export async function updateInterestStatus(data: {
+  targetUserId: string;
+  status: string;
+}) {
+  const res = await api.post("/interest/updateStatus", {
+    targetUserId: data.targetUserId,
+    status: data.status,
+  });
+  return res.data;
+}

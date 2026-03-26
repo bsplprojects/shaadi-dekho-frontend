@@ -32,7 +32,7 @@ import MyProfileHeroCard from "@/components/Skeleton/MyProfileHeroCard";
 import MyProfileBasic from "@/components/Skeleton/MyProfileBasic";
 import { HobbiesInterestsSkeleton } from "@/components/Skeleton/HobbiesInterests";
 import { useInterest } from "@/features/interest/hook";
-
+import { Bookmark } from "lucide-react";
 const formatIncome = (income: string) => {
   const num = parseInt(income);
   if (num >= 100000) return `₹${(num / 100000).toFixed(1)} LPA`;
@@ -79,6 +79,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { data } = useGetProfile(id);
   const addInterest = useInterest();
+  // console.log("ProfileId", data);
 
   if (!data?.data) {
     return (
@@ -133,11 +134,20 @@ const Profile = () => {
           <Card className="overflow-hidden shadow-xl mb-6">
             <div className="h-48 md:h-56 bg-gradient-to-br from-primary/20 via-accent to-primary/10 relative flex items-end">
               <div className="absolute top-6 right-6 flex gap-2">
-                <Badge className="bg-background/80 backdrop-blur text-foreground border-border/50">
-                  {formatOptions(b.maritalStatus)}
-                </Badge>
-                <Badge className="bg-background/80 backdrop-blur text-foreground border-border/50 capitalize">
-                  {r.religion} — {r.caste}
+                <div>
+                  <Badge className="bg-background/80 backdrop-blur text-foreground border-border/50">
+                    {formatOptions(b.maritalStatus)}
+                  </Badge>
+                  <Badge className="bg-background/80 backdrop-blur text-foreground border-border/50 capitalize">
+                    {r.religion} — {r.caste}
+                  </Badge>
+                </div>
+                <Badge
+                  className="  px-1 border-l border-b text-sm  rounded-sm flex items-center justify-center"
+                  // onClick={() => saveShortList(profile?._id)}
+                >
+                  <Bookmark size={15} />
+                  <span>Shortlist</span>
                 </Badge>
               </div>
               <div className="flex items-end gap-5 p-6 w-full">

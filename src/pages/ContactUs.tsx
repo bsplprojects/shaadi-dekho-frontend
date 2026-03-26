@@ -13,18 +13,35 @@ import {
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useContact } from "@/features/contact/hook";
+import { useForm, Controller } from "react-hook-form";
+import { contactPayload } from "@/features/contact/types";
 
 const ContactUs = () => {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<contactPayload>({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
+    },
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const mutation = useContact();
+
+  const onSubmit = (data: contactPayload) => {
+    mutation.mutate(data);
     setSubmitted(true);
-    toast({
-      title: "Message Sent",
-      description: "We'll get back to you within 24 hours.",
-    });
+    reset();
   };
 
   return (
@@ -114,54 +131,81 @@ const ContactUs = () => {
                   </Button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Full Name</Label>
-                      <Input placeholder="Your name" required />
+                      <Input
+                        placeholder="Your name"
+                        {...register("fullName", {
+                          required: "Full name is required",
+                        })}
+                      />
+                      {errors.fullName && (
+                        <p className="text-sm text-red-500">
+                          {errors.fullName.message}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <Label>Email</Label>
                       <Input
                         type="email"
                         placeholder="you@example.com"
-                        required
+                        {...register("email", {
+                          required: "Email is required",
+                        })}
                       />
                     </div>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Phone (Optional)</Label>
-                      <Input placeholder="+91 98765 43210" />
+                      <Input
+                        placeholder="+91 98765 43210"
+                        {...register("phone")}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label>Subject</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a topic" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="account">
-                            Account Issues
-                          </SelectItem>
-                          <SelectItem value="billing">
-                            Billing & Payments
-                          </SelectItem>
-                          <SelectItem value="report">
-                            Report a Profile
-                          </SelectItem>
-                          <SelectItem value="feedback">Feedback</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Controller
+                        name="subject"
+                        control={control}
+                        rules={{ required: "Subject is required" }}
+                        render={({ field }) => (
+                          <Select
+                            onValueChange={field.onChange}
+                            // defaultValue={field.value}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select a topic" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="account">
+                                Account Issues
+                              </SelectItem>
+                              <SelectItem value="billing">
+                                Billing & Payments
+                              </SelectItem>
+                              <SelectItem value="report">
+                                Report a Profile
+                              </SelectItem>
+                              <SelectItem value="feedback">Feedback</SelectItem>
+                              <SelectItem value="other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label>Message</Label>
                     <Textarea
-                      placeholder="Describe your query in detail..."
                       rows={5}
-                      required
+                      placeholder="Describe your query in detail..."
+                      {...register("message", {
+                        required: "Message is required",
+                      })}
                     />
                   </div>
                   <Button type="submit" className="gap-2">

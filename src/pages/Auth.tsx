@@ -107,7 +107,7 @@ const Auth = () => {
                   <Label htmlFor="phone">Phone Number</Label>
                   <Input
                     id="phone"
-                    type="text"
+                    type="text" 
                     inputMode="numeric"
                     placeholder="Enter phone number"
                     className="h-11"

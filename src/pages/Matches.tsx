@@ -8,14 +8,23 @@ import { quickFilters, sidebarSections } from "@/lib/constants";
 import { useGetProfiles } from "@/features/profile/hook";
 import ProfileList from "@/components/Profile/ProfileList";
 import { ProfileCardSkeletons } from "@/components/Skeleton/ProfileCardsSkeleton";
+import YourMatchTab from "@/components/MatchesTab/YourMatchTab";
+import ShortListedByYouTab from "@/components/MatchesTab/ShortListedByYouTab";
+import ShortListedYouTab from "@/components/MatchesTab/ShortListedYouTab";
+import ViewedYouTab from "@/components/MatchesTab/ViewedYouTab";
+import ViewedByYouTab from "@/components/MatchesTab/ViewedByYouTab";
+import RecentlyJoinedTab from "@/components/MatchesTab/RecentlyJoinedTab";
+import NearByMatchesTab from "@/components/MatchesTab/NearByMatchesTab";
+import { useAuth } from "@/contexts/AuthContext";
+import { useUpdateShortlistedStatus } from "@/features/matches/hook";
 
 const Matches = () => {
   const [activeItem, setActiveItem] = useState("Your Matches");
   const [activeQuickFilter, setActiveQuickFilter] = useState<string | null>(
     null,
   );
-  const { data, isLoading } = useGetProfiles();
-
+ 
+  
   return (
     <div className="min-h-[calc(100vh-4rem)] py-8">
       <div className="container">
@@ -68,13 +77,6 @@ const Matches = () => {
           <div className="lg:col-span-3">
             <ProfileCompletion />
 
-            <div className="mb-6">
-              <h1 className="text-3xl font-display font-bold mb-1">
-                {data?.data?.length} Matches based on your{" "}
-                <span className="text-primary">preferences</span>
-              </h1>
-            </div>
-
             {/* Filter bar */}
             <div className="flex flex-wrap items-center gap-2 mb-6">
               <Button variant="outline" size="sm">
@@ -95,14 +97,20 @@ const Matches = () => {
               ))}
             </div>
 
-            {/* Profile cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {isLoading ? (
-                <ProfileCardSkeletons />
-              ) : (
-                data?.data?.map((p) => <ProfileList key={p?._id} profile={p} />)
-              )}
-            </div>
+            {activeItem === "Your Matches" && (
+              <YourMatchTab  activeTab={activeItem}/>
+            )}
+
+            {activeItem === "Shortlisted by you" && (
+              <ShortListedByYouTab activeTab={activeItem} />
+            )}
+
+            {activeItem === "Shortlisted you" && <ShortListedYouTab />}
+
+            {activeItem === "Viewed you" && <ViewedYouTab />}
+            {activeItem === "Viewed by you" && <ViewedByYouTab />}
+            {activeItem === "Nearby matches" && <NearByMatchesTab />}
+            {activeItem === "Recently joined" && <RecentlyJoinedTab />}
           </div>
         </div>
       </div>

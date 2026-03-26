@@ -1,32 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Briefcase, GraduationCap, Heart, MapPin, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { useGetProfile } from "@/features/profile/hook";
-import { useInterest } from "@/features/interest/hook";
+import { useGetAllInterest, useInterest } from "@/features/interest/hook";
+import { Bookmark } from "lucide-react";
+import { useShortlist, useViewedList } from "@/features/matches/hook";
 
-const ProfileList = ({ profile }) => {
+const ProfileList = ({ profile, actionButton }) => {
+  const [viewedlistIds, setViewedlistIds] = useState([]);
   const navigate = useNavigate();
   const addInterest = useInterest();
+  const addViewlist = useViewedList();
+  const { data } = useGetAllInterest();
+
   const SaveInterest = (e: React.FormEvent, id) => {
     e.preventDefault();
     addInterest.mutate(id);
+    // console.log("PLid", id);
   };
 
   const formatOptions = (val: string) => {
     return val?.replace(/_/g, " ")?.replace(/\b\w/g, (c) => c.toUpperCase());
   };
 
+  const handleProfileClick = (id) => {
+    addViewlist.mutate(id, {
+      onSuccess: () => {
+        setViewedlistIds((prev) => [...prev, id]);
+        navigate(`/profile/${id}`);
+      },
+    });
+  };
+
   return (
-    <Card
-      key={profile.id}
-      className="overflow-hidden hover:shadow-lg transition-shadow group cursor-pointer"
-      onClick={() => navigate(`/profile/${profile?._id}`)}
-    >
-      <div className="h-64 w-full overflow-hidden bg-muted">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow group cursor-pointer">
+      <div className="h-64 w-full overflow-hidden bg-muted relative">
+        {/* Only render shortlist button if showShortlistButton is true */}
+        {actionButton && (
+          <span
+            className={`absolute right-0 px-2 py-0.5 border-l border-b text-sm bg-white rounded-sm flex items-center gap-1 cursor-pointer ${actionButton.className || ""}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              actionButton.onClick(profile?._id);
+            }}
+          >
+            {actionButton.icon}
+            <span>{actionButton.label}</span>
+          </span>
+        )}
         <img
+          key={profile.id}
+          onClick={() => handleProfileClick(profile?._id)}
           src={profile?.images?.[0]}
           alt={profile?.memberId}
           className="h-full w-full object-cover"

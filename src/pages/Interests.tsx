@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useGetAllInterest } from "@/features/interest/hook";
+import {
+  useGetAllInterest,
+  useUpdateInterestStatus,
+} from "@/features/interest/hook";
 
 const sidebarSections = [
   {
@@ -13,7 +16,7 @@ const sidebarSections = [
   },
   {
     title: "Interests Sent",
-    filters: ["All",  "Accepted", "Declined"],
+    filters: ["All", "Accepted", "Declined"],
   },
 ];
 
@@ -28,33 +31,46 @@ const statusBadge = (status: string) => {
     return <Badge variant="destructive">Declined</Badge>;
   return <Badge variant="secondary">Pending</Badge>;
 };
+
 type Section = "received" | "sent";
+
 const Interests = () => {
-  const [activeSection, setActiveSection] = useState<Section>();
+  const [activeSection, setActiveSection] = useState<Section>("received");
   const [activeFilter, setActiveFilter] = useState("All");
   const { data } = useGetAllInterest();
 
-  const interests = data?.data || [];
+  // console.log("DATA", data);
+  const updateInterest = useUpdateInterestStatus();
+  // Map backend response to a flat list
+  const receivedInterests = data?.data?.interestedToYou || [];
+  const sentInterests = data?.data?.interestedByYou || [];
 
-  const sent = interests.filter((i: any) => i.type === "sent");
+  const filteredData = (
+    activeSection === "received" ? receivedInterests : sentInterests
+  )
+    .filter((item) => {
+      if (activeFilter === "All") return true;
 
-  const received = interests.filter((i: any) => i.type === "received");
-  
-  const currentData = activeSection === "received" ? received : sent;
-
-  const filteredData = currentData.filter((p) => {
-    if (activeFilter === "All") return true;
-    if (activeFilter === "Pending") return p.status === "pending";
-    if (activeFilter === "Accepted") return p.status === "accepted";
-    if (activeFilter === "Declined") return p.status === "declined";
-    return true;
-  });
+      return item.status?.toLowerCase() === activeFilter.toLowerCase();
+    })
+    .map((item) => ({
+      _id: item._id,
+      name: item.basicDetails?.name || "Unknown",
+      age: item.basicDetails?.age || "-",
+      status: item.status || "pending",
+      user: item.user,
+      initials: (item.basicDetails?.name || "U")
+        .split(" ")
+        .map((n: string) => n[0])
+        .join("")
+        .toUpperCase(),
+    }));
 
   const handleSidebarClick = (sectionIdx: number, filter: string) => {
     setActiveSection(sectionIdx === 0 ? "received" : "sent");
     setActiveFilter(filter);
   };
-  
+
   return (
     <div className="min-h-[calc(100vh-4rem)] py-8">
       <div className="container max-w-5xl">
@@ -104,9 +120,8 @@ const Interests = () => {
           <div className="lg:col-span-3 space-y-3">
             <div className="mb-2">
               <h2 className="text-xl font-semibold">
-                {activeSection === "received"
-                  ? "All interests received"
-                  : "All interests sent"}
+                {activeFilter} Interests{" "}
+                {activeSection === "received" ? "Received" : "Sent"}
               </h2>
               <p className="text-sm text-muted-foreground">
                 {activeSection === "received"
@@ -132,10 +147,27 @@ const Interests = () => {
                     {statusBadge(p.status)}
                     {p.status === "pending" && activeSection === "received" && (
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() =>
+                            updateInterest.mutate({
+                              targetUserId: p.user,
+                              status: "declined",
+                            })
+                          }
+                        >
                           <X className="h-4 w-4" />
                         </Button>
-                        <Button size="sm">
+                        <Button
+                          size="sm"
+                          onClick={() =>
+                            updateInterest.mutate({
+                              targetUserId: p.user,
+                              status: "accepted",
+                            })
+                          }
+                        >
                           <Check className="h-4 w-4" />
                         </Button>
                       </div>

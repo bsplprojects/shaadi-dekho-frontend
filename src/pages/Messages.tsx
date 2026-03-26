@@ -1,24 +1,101 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
+import { io } from "socket.io-client";
+import { useAuth } from "@/contexts/AuthContext";
+import axios from "axios";
+import {
+  useGetProfile,
+  useGetProfiles,
+  useMyProfile,
+} from "@/features/profile/hook";
+import { useGetAllInterest } from "@/features/interest/hook";
+import { api } from "@/lib/axios";
 
-const conversations = [
-  { id: 1, name: "Riya Patel", lastMsg: "Hi! I liked your profile 😊", time: "2m ago", initials: "RP", unread: 2 },
-  { id: 2, name: "Ananya Sharma", lastMsg: "Thank you! Let's connect.", time: "1h ago", initials: "AS", unread: 0 },
-  { id: 3, name: "Sneha Reddy", lastMsg: "What are your hobbies?", time: "3h ago", initials: "SR", unread: 1 },
-];
-
-const messages = [
-  { id: 1, from: "them", text: "Hi! I liked your profile 😊", time: "10:30 AM" },
-  { id: 2, from: "me", text: "Thank you! Your profile looks great too.", time: "10:32 AM" },
-  { id: 3, from: "them", text: "Would love to know more about you!", time: "10:33 AM" },
-];
+const socket = io("http://localhost:5000");
 
 const Messages = () => {
-  const [selected, setSelected] = useState(conversations[0]);
   const [input, setInput] = useState("");
+  const [chatProfiles, setChatProfiles] = useState<any[]>([]);
+  const [selectedProfile, setSelectedProfile] = useState<any>(null);
+
+  const user = useAuth();
+  const { data: myProfile } = useMyProfile();
+  const { data: interestData } = useGetAllInterest();
+
+
+  useEffect(() => {
+    if (!interestData || !user?.user?._id) return;
+
+    const { interestedByYou, interestedToYou } = interestData?.data;
+
+    const acceptedByYou = interestedByYou.filter(
+      (i) => i.status === "accepted" && i.user !== user.user._id,
+    );
+
+    const acceptedYou = interestedToYou.filter(
+      (i) => i.status === "accepted" && i.user !== user.user._id,
+    );
+
+    const merged = [...acceptedByYou, ...acceptedYou];
+
+    const unique = merged.filter(
+      (v, i, a) => a.findIndex((t) => t.user === v.user) === i,
+    );
+
+    setChatProfiles(unique);
+  }, [interestData, user?.user?._id]);
+
+  //websocket
+
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+
+  // If a profile is selected, its `user` field is the receiverId
+  const receiverId = selectedProfile?.user;
+
+  // Register user + receive messages
+  useEffect(() => {
+    socket.emit("register", user?.user?._id);
+
+    socket.on("receive_message", (msg) => {
+      setMessages((prev) => [...prev, msg]);
+    });
+
+    return () => {
+      socket.off("receive_message");
+    };
+  }, []);
+
+  // Fetch old messages
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const res = await api.get(
+          `/api/v1/messages/${user?.user?._id}/${receiverId}`);
+      
+        setMessages(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchMessages();
+  }, []);
+
+  const sendMessage = () => {
+    if (!message.trim()) return;
+
+    socket.emit("send_message", {
+      senderId: user?.user?._id,
+      receiverId,
+      text: message,
+    });
+
+    setMessage("");
+  };
 
   return (
     <div className="min-h-[calc(100vh-4rem)]">
@@ -28,21 +105,36 @@ const Messages = () => {
           {/* Conversations list */}
           <Card className="md:col-span-1 overflow-auto">
             <CardContent className="p-0">
-              {conversations.map(c => (
+              {chatProfiles.map((profile) => (
                 <button
-                  key={c.id}
-                  onClick={() => setSelected(c)}
-                  className={`w-full flex items-center gap-3 p-4 text-left hover:bg-muted transition-colors border-b border-border ${selected.id === c.id ? "bg-accent" : ""}`}
+                  key={profile.user}
+                  onClick={() => setSelectedProfile(profile)}
+                  className={`w-full flex items-center gap-3 p-2 text-left border-b border-border hover:bg-muted transition-colors ${
+                    selectedProfile?.user === profile.user ? "bg-accent" : ""
+                  }`}
                 >
-                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary shrink-0">{c.initials}</div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-sm">{c.name}</span>
-                      <span className="text-[10px] text-muted-foreground">{c.time}</span>
-                    </div>
-                    <p className="text-xs text-muted-foreground truncate">{c.lastMsg}</p>
+                  {/* <div className="h-10 w-10 rounded-full overflow-hidden bg-primary/10 shrink-0">
+                    {validImage ? (
+                      <img
+                        src={validImage}
+                        alt="profile"
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-sm font-bold text-primary">
+                        {profile?.basicDetails?.name?.[0]}
+                      </span>
+                    )}
+                  </div> */}
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary shrink-0">
+                    {" "}
+                    {profile.basicDetails.name[0]}{" "}
                   </div>
-                  {c.unread > 0 && <span className="h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-bold">{c.unread}</span>}
+                  <div className="flex-1 min-w-0">
+                    <span className="font-medium text-sm">
+                      {profile.basicDetails.name}
+                    </span>
+                  </div>
                 </button>
               ))}
             </CardContent>
@@ -50,16 +142,38 @@ const Messages = () => {
 
           {/* Chat area */}
           <Card className="md:col-span-2 flex flex-col">
+            {/* Header */}
             <div className="p-4 border-b border-border flex items-center gap-3">
-              <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">{selected.initials}</div>
-              <span className="font-semibold">{selected.name}</span>
+              {selectedProfile ? (
+                <>
+                  <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
+                    {selectedProfile.basicDetails?.name?.[0]}
+                  </div>
+                  <span className="font-semibold">
+                    {selectedProfile.basicDetails?.name}
+                  </span>
+                </>
+              ) : (
+                <span className="text-sm text-muted-foreground">
+                  Select a conversation
+                </span>
+              )}
             </div>
             <CardContent className="flex-1 overflow-auto p-4 space-y-3">
-              {messages.map(m => (
-                <div key={m.id} className={`flex ${m.from === "me" ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm ${m.from === "me" ? "bg-primary text-primary-foreground rounded-br-md" : "bg-muted rounded-bl-md"}`}>
-                    {m.text}
-                    <div className={`text-[10px] mt-1 ${m.from === "me" ? "text-primary-foreground/60" : "text-muted-foreground"}`}>{m.time}</div>
+              {messages.map((m, index) => (
+                <div
+                  key={index}
+                  className={`flex ${m.from === "me" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[70%] px-4 py-2.5 rounded-2xl text-sm ${
+                      m.from === "me"
+                        ? "bg-primary text-primary-foreground rounded-br-md"
+                        : "bg-muted rounded-bl-md"
+                    }`}
+                  >
+                    {m.message}
+                    <div className="text-[10px] mt-1 opacity-60">{m.time}</div>
                   </div>
                 </div>
               ))}
@@ -71,7 +185,9 @@ const Messages = () => {
                 onChange={(e) => setInput(e.target.value)}
                 className="flex-1"
               />
-              <Button size="icon"><Send className="h-4 w-4" /></Button>
+              <Button size="icon" onClick={sendMessage}>
+                <Send className="h-4 w-4" />
+              </Button>
             </div>
           </Card>
         </div>

@@ -104,6 +104,7 @@ const MyProfile = () => {
       <div className="container max-w-5xl">
         {/* Hero Card */}
         <Suspense fallback={<MyProfileHeroCard />}>
+          
           <Card className="overflow-hidden shadow-xl mb-6 border-0">
             <div className="h-48 md:h-56 bg-gradient-to-br from-primary/20 via-accent to-primary/10 relative">
               <div className="absolute top-5 right-5 flex gap-2">

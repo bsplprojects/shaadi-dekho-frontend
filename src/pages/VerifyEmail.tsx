@@ -19,7 +19,6 @@ const VerifyEmail = () => {
     e.preventDefault();
     if (email) setSent(true);
   };
-
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 page-pattern page-dots">
       <Card className="w-full max-w-md animate-fade-in shadow-xl border-border/60">
